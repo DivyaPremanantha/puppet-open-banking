@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
 ~ Copyright (c) 2011, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 ~
@@ -14,12 +14,14 @@
 ~ See the License for the specific language governing permissions and
 ~ limitations under the License.
  -->
+
 <Server xmlns="http://wso2.org/projects/carbon/carbon.xml">
+
     <JDBCPersistenceManager>
         <DataSource>
             <!-- Include a data source name (jndiConfigName) from the set of data
                 sources defined in master-datasources.xml -->
-            <Name>jdbc/WSO2AM_DB</Name>
+            <Name>jdbc/WSO2IdentityDS</Name>
         </DataSource>
         <!-- If the identity database is created from another place and if it is
             required to skip schema initialization during the server start up, set the
@@ -52,11 +54,13 @@
             </TempDataCleanup>
         </SessionDataPersist>
     </JDBCPersistenceManager>
+
     <!-- Time configurations are in minutes -->
     <TimeConfig>
         <SessionIdleTimeout>15</SessionIdleTimeout>
         <RememberMeTimeout>20160</RememberMeTimeout>
     </TimeConfig>
+
     <!-- Security configurations -->
     <Security>
         <!-- The directory under which all other KeyStore files will be stored -->
@@ -64,16 +68,18 @@
         <KeyManagerType>SunX509</KeyManagerType>
         <TrustManagerType>SunX509</TrustManagerType>
     </Security>
+
     <Identity>
         <IssuerPolicy>SelfAndManaged</IssuerPolicy>
         <TokenValidationPolicy>CertValidate</TokenValidationPolicy>
-        <BlackList/>
-        <WhiteList/>
+        <BlackList></BlackList>
+        <WhiteList></WhiteList>
         <System>
-            <KeyStore/>
-            <StorePass/>
+            <KeyStore></KeyStore>
+            <StorePass></StorePass>
         </System>
     </Identity>
+
     <OpenID>
         <!--
             Default values for OpenIDServerUrl and OpenIDUSerPattern are built in following format
@@ -96,19 +102,23 @@
                        ii.  PrivateAssociationCryptoStore
                        iii. PrivateAssociationReplicationStore
         -->
+
         <!-- Specify full qualified class name of the class which going to use as private association store -->
         <!--
 		<OpenIDPrivateAssociationStoreClass>org.wso2.carbon.identity.provider.openid.PrivateAssociationCryptoStore</OpenIDPrivateAssociationStoreClass>
 	-->
+
         <!-- The expiration time (in minutes) for the OpenID association -->
         <!--
 		<OpenIDAssociationExpiryTime>15</OpenIDAssociationExpiryTime>
 	-->
+
         <!-- Configs specific to PrivateAssociationCryptoStore -->
         <!-- Server secret. This value should be the same in all nodes in the cluster -->
         <!--
 		<OpenIDPrivateAssociationServerKey>qewlj324lmasc</OpenIDPrivateAssociationServerKey>
 	-->
+
         <!-- Configs specific to PrivateAssociationCryptoStore -->
         <!-- This enable private association cleanup task which cleans expired private associations -->
         <!--
@@ -119,6 +129,7 @@
 		<OpenIDAssociationCleanupPeriod>15</OpenIDAssociationCleanupPeriod>
 	-->
     </OpenID>
+
     <OAuth>
         <!-- Token cleanup feature config to clean IDN_OAUTH2_ACCESS_TOKEN table-->
         <TokenCleanup>
@@ -131,9 +142,8 @@
              Default: org.wso2.carbon.identity.oauth2.token.OauthTokenIssuerImpl.
              Applicable values: org.wso2.carbon.identity.oauth2.token.JWTTokenIssuer
         -->
+        <!--<IdentityOAuthTokenGenerator>org.wso2.carbon.identity.oauth2.token.JWTTokenIssuer</IdentityOAuthTokenGenerator>-->
 
-        <!--Required in OB as disabled-->
-        <!--<IdentityOAuthTokenGenerator>org.wso2.carbon.apimgt.keymgt.issuers.APIMTokenIssuer</IdentityOAuthTokenGenerator>-->
         <!-- True, if access token alias is stored in the database instead of access token.
              Eg. token alias and token is same when default AccessTokenValueGenerator is used.
              When JWTTokenIssuer is used, jti is used as the token alias
@@ -141,44 +151,47 @@
              Applicable values: true,false
         -->
         <!--<PersistAccessTokenAlias>false</PersistAccessTokenAlias>-->
+
         <!-- This configuration is used to specify the access token value generator.
              Default: org.apache.oltu.oauth2.as.issuer.UUIDValueGenerator
              Applicable values: org.apache.oltu.oauth2.as.issuer.UUIDValueGenerator,
                                 org.apache.oltu.oauth2.as.issuer.MD5Generator,
                                 org.wso2.carbon.identity.oauth.tokenvaluegenerator.SHA256Generator-->
         <!--<AccessTokenValueGenerator>org.wso2.carbon.identity.oauth.tokenvaluegenerator.SHA256Generator</AccessTokenValueGenerator>-->
+
         <!-- This configuration is used to specify whether the Service Provider tenant domain should be used when generating
              access token. Otherwise user domain will be used. Currently this value is only supported by the JWTTokenIssuer.-->
         <!--<UseSPTenantDomain>True</UseSPTenantDomain>-->
+
         <!--
             Default values for OAuth1RequestTokenUrl, OAuth1AccessTokenUrl, OAuth1AuthorizeUrl
             OAuth2AuthzEPUrl, OAuth2TokenEPUrl and OAuth2UserInfoEPUrl are built in following format
             https://<HostName>:<MgtTrpProxyPort except 443>/<ProxyContextPath>/<context>/<path>
             If above format doesn't satisfy uncomment the following configs and explicitly configure the values
          -->
-
-        <!--openbanking_hostname Required in OB-->
         <OAuth1RequestTokenUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth/request-token</OAuth1RequestTokenUrl>
         <OAuth1AuthorizeUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth/authorize-url</OAuth1AuthorizeUrl>
         <OAuth1AccessTokenUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth/access-token</OAuth1AccessTokenUrl>
-        <OAuth2AuthzEPUrl>${carbon.protocol}://<%= @obam_hostname %>:8243/authorize</OAuth2AuthzEPUrl>
-        <OAuth2TokenEPUrl>${carbon.protocol}://<%= @obam_hostname %>:8243/token</OAuth2TokenEPUrl>
+        <OAuth2AuthzEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/authorize</OAuth2AuthzEPUrl>
+        <OAuth2TokenEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/token</OAuth2TokenEPUrl>
         <OAuth2RevokeEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/revoke</OAuth2RevokeEPUrl>
         <OAuth2IntrospectEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/introspect</OAuth2IntrospectEPUrl>
-        <OAuth2UserInfoEPUrl>${carbon.protocol}://<%= @obam_hostname %>:8243/userinfo</OAuth2UserInfoEPUrl>
+        <OAuth2UserInfoEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/userinfo</OAuth2UserInfoEPUrl>
         <OIDCCheckSessionEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oidc/checksession</OIDCCheckSessionEPUrl>
         <OIDCLogoutEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oidc/logout</OIDCLogoutEPUrl>
-        <OAuth2ConsentPage>${carbon.protocol}://<%= @obkm_hostname %>:${carbon.management.port}/authenticationendpoint/oauth2_authz.do</OAuth2ConsentPage>
-        <OAuth2ErrorPage>${carbon.protocol}://<%= @obkm_hostname %>:${carbon.management.port}/authenticationendpoint/oauth2_error.do</OAuth2ErrorPage>
-        <OIDCConsentPage>${carbon.protocol}://<%= @obkm_hostname %>:${carbon.management.port}/authenticationendpoint/oauth2_consent.do</OIDCConsentPage>
-        <OIDCLogoutConsentPage>${carbon.protocol}://<%= @obkm_hostname %>:${carbon.management.port}/authenticationendpoint/oauth2_logout_consent.do</OIDCLogoutConsentPage>
-        <OIDCLogoutPage>${carbon.protocol}://<%= @obkm_hostname %>:${carbon.management.port}/authenticationendpoint/oauth2_logout.do</OIDCLogoutPage>
-        <OIDCWebFingerEPUrl>${carbon.protocol}://<%= @obkm_hostname %>:${carbon.management.port}/.well-known/webfinger</OIDCWebFingerEPUrl>
+        <OAuth2ConsentPage>${carbon.protocol}://${carbon.host}:${carbon.management.port}/authenticationendpoint/oauth2_authz.do</OAuth2ConsentPage>
+        <OAuth2ErrorPage>${carbon.protocol}://${carbon.host}:${carbon.management.port}/authenticationendpoint/oauth2_error.do</OAuth2ErrorPage>
+        <OIDCConsentPage>${carbon.protocol}://${carbon.host}:${carbon.management.port}/authenticationendpoint/oauth2_consent.do</OIDCConsentPage>
+        <OIDCLogoutConsentPage>${carbon.protocol}://${carbon.host}:${carbon.management.port}/authenticationendpoint/oauth2_logout_consent.do</OIDCLogoutConsentPage>
+        <OIDCLogoutPage>${carbon.protocol}://${carbon.host}:${carbon.management.port}/authenticationendpoint/oauth2_logout.do</OIDCLogoutPage>
+
+        <OIDCWebFingerEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/.well-known/webfinger</OIDCWebFingerEPUrl>
+
         <!-- For tenants below urls will be modified as https://<hostname>:<port>/t/<tenant domain>/<path>-->
-        <!--OB DCR url-->
-        <OAuth2DCREPUrl>${carbon.protocol}://<%= @obam_hostname %>:8243/register</OAuth2DCREPUrl>
+        <OAuth2DCREPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/api/identity/oauth2/dcr/v1.1/register</OAuth2DCREPUrl>
         <OAuth2JWKSPage>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/jwks</OAuth2JWKSPage>
-        <OIDCDiscoveryEPUrl>${carbon.protocol}://<%= @obkm_hostname %>:${carbon.management.port}/oauth2/oidcdiscovery</OIDCDiscoveryEPUrl>
+        <OIDCDiscoveryEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/oidcdiscovery</OIDCDiscoveryEPUrl>
+
         <!-- Default validity period for Authorization Code in seconds -->
         <AuthorizationCodeDefaultValidityPeriod>300</AuthorizationCodeDefaultValidityPeriod>
         <!-- Default validity period for application access tokens in seconds -->
@@ -186,16 +199,11 @@
         <!-- Default validity period for user access tokens in seconds -->
         <UserAccessTokenDefaultValidityPeriod>3600</UserAccessTokenDefaultValidityPeriod>
         <!-- Validity period for refresh token -->
-        <!--Required in OB: To trigger consent re-authentication, set the <RenewRefreshTokenForRefreshGrant> to false
-            and set the following to the desired period-->
         <RefreshTokenValidityPeriod>84600</RefreshTokenValidityPeriod>
         <!-- Timestamp skew in seconds -->
         <TimestampSkew>0</TimestampSkew>
         <!-- Enable renewal of refresh token for refresh_token grant -->
-
-        <!--Required in OB: To trigger re-authentication, set the <RefreshTokenValidityPeriod> to the desired re-authentication triggering
-            period and set the following to false-->
-        <RenewRefreshTokenForRefreshGrant>false</RenewRefreshTokenForRefreshGrant>
+        <RenewRefreshTokenForRefreshGrant>true</RenewRefreshTokenForRefreshGrant>
         <!-- Process the token before storing it in database, e.g. encrypting -->
         <TokenPersistenceProcessor>org.wso2.carbon.identity.oauth.tokenprocessor.PlainTextPersistenceProcessor</TokenPersistenceProcessor>
         <!-- This should be true if the oauth keys (consumer secret, access token, refresh token and authorization code) need to be hashed,
@@ -208,68 +216,58 @@
         <MapFederatedUsersToLocal>false</MapFederatedUsersToLocal>
         <!-- Supported Response Types -->
         <SupportedResponseTypes>
-            <!--Required in OB: Only code and code id_token should be supported-->
             <SupportedResponseType>
                 <ResponseTypeName>token</ResponseTypeName>
                 <ResponseTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.authz.handlers.AccessTokenResponseTypeHandler</ResponseTypeHandlerImplClass>
             </SupportedResponseType>
-            <!--Required in OB: Only code and code id_token should be supported-->
             <SupportedResponseType>
                 <ResponseTypeName>code</ResponseTypeName>
-                <ResponseTypeHandlerImplClass>com.wso2.finance.open.banking.identity.extensions.response.type.handlers.OBCodeResponseTypeHandler</ResponseTypeHandlerImplClass>
-            </SupportedResponseType>
-            <SupportedResponseType>
-                <ResponseTypeName>code id_token</ResponseTypeName>
-                <ResponseTypeHandlerImplClass>com.wso2.finance.open.banking.identity.extensions.response.type.handlers.OBHybridResponseTypeHandler</ResponseTypeHandlerImplClass>
+                <ResponseTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.authz.handlers.CodeResponseTypeHandler</ResponseTypeHandlerImplClass>
             </SupportedResponseType>
             <SupportedResponseType>
                 <ResponseTypeName>id_token</ResponseTypeName>
                 <ResponseTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.authz.handlers.IDTokenResponseTypeHandler</ResponseTypeHandlerImplClass>
             </SupportedResponseType>
-            <!--Required disable for OB-->
-            <!--SupportedResponseType>
+            <SupportedResponseType>
                 <ResponseTypeName>id_token token</ResponseTypeName>
-                <ResponseTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.authz.handlers.IDTokenResponseTypeHandler</ResponseTypeHandlerImplClass>
-            </SupportedResponseType-->
+                <ResponseTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.authz.handlers.IDTokenTokenResponseTypeHandler</ResponseTypeHandlerImplClass>
+            </SupportedResponseType>
         </SupportedResponseTypes>
         <!-- Supported Grant Types -->
         <SupportedGrantTypes>
             <SupportedGrantType>
                 <GrantTypeName>authorization_code</GrantTypeName>
-                <GrantTypeHandlerImplClass>com.wso2.finance.open.banking.identity.extensions.grant.type.handlers.OBAuthorizationCodeGrantHandler</GrantTypeHandlerImplClass>
+                <GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.token.handlers.grant.AuthorizationCodeGrantHandler</GrantTypeHandlerImplClass>
             </SupportedGrantType>
-            <!--  Required to disable for OB -->
-            <!--<SupportedGrantType>
-            	<GrantTypeName>password</GrantTypeName
-             	<GrantTypeHandlerImplClass>org.wso2.carbon.apimgt.keymgt.handlers.ExtendedPasswordGrantHandler</GrantTypeHandlerImplClass>
-            </SupportedGrantType>-->
+            <SupportedGrantType>
+                <GrantTypeName>password</GrantTypeName>
+                <GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.token.handlers.grant.PasswordGrantHandler</GrantTypeHandlerImplClass>
+            </SupportedGrantType>
             <SupportedGrantType>
                 <GrantTypeName>refresh_token</GrantTypeName>
                 <GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.token.handlers.grant.RefreshGrantHandler</GrantTypeHandlerImplClass>
             </SupportedGrantType>
             <SupportedGrantType>
                 <GrantTypeName>client_credentials</GrantTypeName>
-                <GrantTypeHandlerImplClass>com.wso2.finance.open.banking.identity.extensions.grant.type.handlers.OBClientCredentialsGrantHandler</GrantTypeHandlerImplClass>
+                <GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.token.handlers.grant.ClientCredentialsGrantHandler</GrantTypeHandlerImplClass>
                 <IsRefreshTokenAllowed>false</IsRefreshTokenAllowed>
                 <IdTokenAllowed>false</IdTokenAllowed>
             </SupportedGrantType>
             <SupportedGrantType>
                 <GrantTypeName>urn:ietf:params:oauth:grant-type:saml2-bearer</GrantTypeName>
-                <GrantTypeHandlerImplClass>org.wso2.carbon.apimgt.keymgt.handlers.ExtendedSAML2BearerGrantHandler</GrantTypeHandlerImplClass>
+                <GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.token.handlers.grant.saml.SAML2BearerGrantHandler</GrantTypeHandlerImplClass>
             </SupportedGrantType>
-            <!--  Required to disable for OB -->
-            <!--<SupportedGrantType>
-             	<GrantTypeName>iwa:ntlm</GrantTypeName>
-    		<GrantTypeValidatorImplClass>org.wso2.carbon.identity.oauth.common.NTLMAuthenticationValidator</GrantTypeValidatorImplClass>
-            	<GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.token.handlers.grant.iwa.ntlm.NTLMAuthenticationGrantHandlerWithHandshake</GrantTypeHandlerImplClass>
-            </SupportedGrantType>-->
-            <!--  Required to disable for OB -->
-            <!--<SupportedGrantType>
-            	<GrantTypeName>urn:ietf:params:oauth:grant-type:jwt-bearer</GrantTypeName>
-            	<GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.grant.jwt.JWTBearerGrantHandler</GrantTypeHandlerImplClass>
-             	<GrantTypeValidatorImplClass>org.wso2.carbon.identity.oauth2.grant.jwt.JWTGrantValidator</GrantTypeValidatorImplClass>
-            </SupportedGrantType>-->
+            <SupportedGrantType>
+                <GrantTypeName>iwa:ntlm</GrantTypeName>
+                <GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.token.handlers.grant.iwa.ntlm.NTLMAuthenticationGrantHandler</GrantTypeHandlerImplClass>
+            </SupportedGrantType>
+            <SupportedGrantType>
+                <GrantTypeName>urn:ietf:params:oauth:grant-type:jwt-bearer</GrantTypeName>
+                <GrantTypeHandlerImplClass>org.wso2.carbon.identity.oauth2.grant.jwt.JWTBearerGrantHandler</GrantTypeHandlerImplClass>
+                <GrantTypeValidatorImplClass>org.wso2.carbon.identity.oauth2.grant.jwt.JWTGrantValidator</GrantTypeValidatorImplClass>
+            </SupportedGrantType>
         </SupportedGrantTypes>
+
         <!--
             Defines the grant types that will filter user claims based on user consent in their responses such as
             id_token or user info response.
@@ -286,30 +284,33 @@
                 <GrantTypeName>implicit</GrantTypeName>
             </UserConsentEnabledGrantType>
         </UserConsentEnabledGrantTypes>
+
         <OAuthCallbackHandlers>
-            <OAuthCallbackHandler Class="org.wso2.carbon.apimgt.keymgt.util.APIManagerOAuthCallbackHandler"/>
+            <OAuthCallbackHandler Class="org.wso2.carbon.identity.oauth.callback.DefaultCallbackHandler"/>
         </OAuthCallbackHandlers>
-        <OAuthScopeValidator class="org.wso2.carbon.identity.oauth2.validators.JDBCScopeValidator"/>
         <TokenValidators>
-            <TokenValidator
-                    class="org.wso2.carbon.identity.oauth2.validators.DefaultOAuth2TokenValidator" type="bearer"/>
-            <TokenValidator
-                    class="org.wso2.carbon.identity.oauth2.validators.OAuth2JWTTokenValidator" type="jwt"/>
+            <TokenValidator type="bearer" class="org.wso2.carbon.identity.oauth2.validators.DefaultOAuth2TokenValidator"/>
+            <TokenValidator type="jwt" class="org.wso2.carbon.identity.oauth2.validators.OAuth2JWTTokenValidator"/>
         </TokenValidators>
+
         <!-- Scope validators list. The validators registered here wil be executed during token validation. -->
         <ScopeValidators>
-            <ScopeValidator class="org.wso2.carbon.identity.oauth2.validators.JDBCScopeValidator"/>
+            <ScopeValidator class="org.wso2.carbon.identity.oauth2.validators.JDBCScopeValidator" />
             <ScopeValidator class="org.wso2.carbon.identity.oauth2.validators.xacml.XACMLScopeValidator"/>
         </ScopeValidators>
+
         <!-- Scope handlers list. The handlers registered here will be executed at the scope validation phase while
              issuing access tokens. -->
         <ScopeHandlers>
-            <ScopeHandler class="org.wso2.carbon.identity.oauth2.validators.OIDCScopeHandler"/>
+            <ScopeHandler class="org.wso2.carbon.identity.oauth2.validators.OIDCScopeHandler" />
         </ScopeHandlers>
+
         <!-- Assertions can be used to embedd parameters into access token. -->
         <EnableAssertions>
             <UserName>false</UserName>
         </EnableAssertions>
+
+
         <!-- This should be true if subject identifier in the token validation response needs to adhere to the
         following SP configuration.
 
@@ -323,6 +324,7 @@
         Supported versions: IS 5.4.0 beta onwards
         -->
         <!--<BuildSubjectIdentifierFromSPConfig>true</BuildSubjectIdentifierFromSPConfig>-->
+
         <!-- This should be set to true when using multiple user stores and keys
             should saved into different tables according to the user store. By default
             all the application keys are saved in to the same table. UserName Assertion
@@ -332,9 +334,7 @@
             provide 'A:foo.com', foo.com should be the user store domain name and 'A'
             represent the relavant mapping of token store table, i.e. tokens will be
             added to a table called IDN_OAUTH2_ACCESS_TOKEN_A. -->
-        <AccessTokenPartitioningDomains>
-            <!-- A:foo.com, B:bar.com -->
-        </AccessTokenPartitioningDomains>
+        <AccessTokenPartitioningDomains><!-- A:foo.com, B:bar.com --></AccessTokenPartitioningDomains>
         <AuthorizationContextTokenGeneration>
             <Enabled>false</Enabled>
             <TokenGeneratorImplClass>org.wso2.carbon.identity.oauth2.authcontext.JWTTokenGenerator</TokenGeneratorImplClass>
@@ -343,6 +343,7 @@
             <SignatureAlgorithm>SHA256withRSA</SignatureAlgorithm>
             <AuthorizationContextTTL>15</AuthorizationContextTTL>
         </AuthorizationContextTokenGeneration>
+
         <SAML2Grant>
             <!--SAML2TokenHandler></SAML2TokenHandler-->
             <!-- UserType conifg decides whether the SAML assertion carrying user is local user or a federated user.
@@ -353,13 +354,16 @@
             <UserType>FEDERATED</UserType>
             <!--UserType>LEGACY</UserType-->
         </SAML2Grant>
+
         <OpenIDConnect>
             <IDTokenBuilder>org.wso2.carbon.identity.openidconnect.DefaultIDTokenBuilder</IDTokenBuilder>
             <SignatureAlgorithm>SHA256withRSA</SignatureAlgorithm>
+
             <!-- Default asymmetric encryption algorithm that used to encrypt CEK. -->
             <IDTokenEncryptionAlgorithm>RSA-OAEP</IDTokenEncryptionAlgorithm>
             <!-- Default symmetric encryption algorithm that used to encrypt JWT claims set. -->
             <IDTokenEncryptionMethod>A128GCM</IDTokenEncryptionMethod>
+
             <!-- Supported versions: IS 5.5.0 onwards. -->
             <SupportedIDTokenEncryptionAlgorithms>
                 <SupportedIDTokenEncryptionAlgorithm>RSA1_5</SupportedIDTokenEncryptionAlgorithm>
@@ -372,17 +376,18 @@
                 <SupportedIDTokenEncryptionMethod>A128CBC-HS256</SupportedIDTokenEncryptionMethod>
                 <SupportedIDTokenEncryptionMethod>A128CBC+HS256</SupportedIDTokenEncryptionMethod>
             </SupportedIDTokenEncryptionMethods>
+
             <EnableAudiences>true</EnableAudiences>
             <!-- Comment out to add Audience values to the JWT token (id_token)  -->
             <!--Audiences>
                    <Audience>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/token</Audience>
             </Audiences -->
+
             <!--
                 Default value for IDTokenIssuerID, is OAuth2TokenEPUrl.
                 If that doesn't satisfy uncomment the following config and explicitly configure the value
             -->
-            <!--openbanking_hostname Required in OB-->
-            <IDTokenIssuerID>https://<%= @obam_hostname %>:8243/token</IDTokenIssuerID>
+            <IDTokenIssuerID>${carbon.protocol}://${carbon.host}:${carbon.management.port}/oauth2/token</IDTokenIssuerID>
             <IDTokenCustomClaimsCallBackHandler>org.wso2.carbon.identity.openidconnect.SAMLAssertionClaimsCallback</IDTokenCustomClaimsCallBackHandler>
             <IDTokenExpiration>3600</IDTokenExpiration>
             <UserInfoJWTSignatureAlgorithm>SHA256withRSA</UserInfoJWTSignatureAlgorithm>
@@ -398,6 +403,7 @@
                 Supported versions: IS 5.5.0 onwards
             -->
             <LogoutTokenExpiration>120</LogoutTokenExpiration>
+
             <!--
                 OIDC Request Object builder implementation.
                 Supported versions: IS 5.4.0 onwards
@@ -408,31 +414,22 @@
                     <ClassName>org.wso2.carbon.identity.openidconnect.RequestParamRequestObjectBuilder</ClassName>
                 </RequestObjectBuilder>
             </RequestObjectBuilders>
+
             <!--
                 OIDC Request Object validator implementation.
                 Supported versions: IS 5.4.0 onwards
             -->
-            <!--OB RequestObjectValidator Required in OB-->
-            <!--RequestObjectValidator>org.wso2.carbon.identity.openidconnect.RequestObjectValidatorImpl</RequestObjectValidator-->
-            <RequestObjectValidator>com.wso2.finance.open.banking.request.object.validator.OBRequestObjectValidatorImpl</RequestObjectValidator>
+            <RequestObjectValidator>org.wso2.carbon.identity.openidconnect.RequestObjectValidatorImpl</RequestObjectValidator>
         </OpenIDConnect>
+
         <!-- Configs related to OAuth2 token persistence -->
         <TokenPersistence>
             <Enable>true</Enable>
             <PoolSize>0</PoolSize>
             <RetryCount>5</RetryCount>
         </TokenPersistence>
-
-        <!--
-            Configuration provides the ability to renew the access token and the refresh token(where applicable) per each token request
-            and revoke previously available active token for a matching clientid, user and scopes combination.
-            Not applicable for refresh token grant type and when when self-contained access tokens are used.
-            Default value : false
-            Required in OB: In Open Banking, during consent re-authentication, if the previous tokens bound to consent need to be revoked,
-            set the following config to true.
-        -->
-        <RenewTokenPerRequest>true</RenewTokenPerRequest>
     </OAuth>
+
     <MultifactorAuthentication>
         <!--Enable>false</Enable-->
         <XMPPSettings>
@@ -446,6 +443,7 @@
             </XMPPConfig>
         </XMPPSettings>
     </MultifactorAuthentication>
+
     <SSOService>
         <EntityId>${carbon.host}</EntityId>
         <!--
@@ -467,6 +465,7 @@
         <SAMLSSOSigner>org.wso2.carbon.identity.sso.saml.builders.signature.DefaultSSOSigner</SAMLSSOSigner>
         <SAML2HTTPRedirectSignatureValidator>org.wso2.carbon.identity.sso.saml.validators.SAML2HTTPRedirectDeflateSignatureValidator</SAML2HTTPRedirectSignatureValidator>
         <!--SAMLSSOResponseBuilder>org.wso2.carbon.identity.sso.saml.builders.DefaultResponseBuilder</SAMLSSOResponseBuilder-->
+
         <!-- SAML Token validity period in minutes -->
         <SAMLResponseValidityPeriod>5</SAMLResponseValidityPeriod>
         <UseAuthenticatedUserDomainCrypto>false</UseAuthenticatedUserDomainCrypto>
@@ -475,12 +474,15 @@
         <SAMLDefaultAssertionEncryptionAlgorithmURI>http://www.w3.org/2001/04/xmlenc#aes256-cbc</SAMLDefaultAssertionEncryptionAlgorithmURI>
         <SAMLDefaultKeyEncryptionAlgorithmURI>http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p</SAMLDefaultKeyEncryptionAlgorithmURI>
         <SLOHostNameVerificationEnabled>true</SLOHostNameVerificationEnabled>
+
         <SAML2ArtifactValidityPeriodInMinutes>4</SAML2ArtifactValidityPeriodInMinutes>
     </SSOService>
+
     <Consent>
         <!--Specify whether consent management should be enable during SSO.-->
         <EnableSSOConsentManagement>true</EnableSSOConsentManagement>
     </Consent>
+
     <SecurityTokenService>
         <!--
             Default value for IdentityProviderURL is  built in following format
@@ -489,6 +491,7 @@
         -->
         <IdentityProviderURL>${carbon.protocol}://${carbon.host}:${carbon.management.port}/services/wso2carbon-sts</IdentityProviderURL>
     </SecurityTokenService>
+
     <PassiveSTS>
         <!--
             Default value for IdentityProviderURL is  built in following format
@@ -500,6 +503,7 @@
         <TokenStoreClassName>org.wso2.carbon.identity.sts.passive.utils.NoPersistenceTokenStore</TokenStoreClassName>
         <SLOHostNameVerificationEnabled>true</SLOHostNameVerificationEnabled>
     </PassiveSTS>
+
     <EntitlementSettings>
         <ThirftBasedEntitlementConfig>
             <EnableThriftService>false</EnableThriftService>
@@ -513,6 +517,7 @@
             <ThriftHostName>${carbon.host}</ThriftHostName>
         </ThirftBasedEntitlementConfig>
     </EntitlementSettings>
+
     <SCIM>
         <!--
             Default value for UserEPUrl and GroupEPUrl are built in following format
@@ -533,6 +538,7 @@
                 <Property name="UserName">admin</Property>
                 <Property name="Password">admin</Property-->
             </Authenticator>
+
             <!-- Flag to indicate advanced complex multiValued attributes support enabled or not.
             Default value : false
             Supported versions: IS 5.5.0 beta onwards
@@ -540,6 +546,7 @@
             <!--<ComplexMultiValuedAttributeSupportEnabled>true</ComplexMultiValuedAttributeSupportEnabled>-->
         </SCIMAuthenticators>
     </SCIM>
+
     <SCIM2>
         <!--
             Default value for UserEPUrl and GroupEPUrl are built in following format
@@ -549,6 +556,7 @@
         <!--UserEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/scim2/Users</UserEPUrl-->
         <!--GroupEPUrl>${carbon.protocol}://${carbon.host}:${carbon.management.port}/scim2/Groups</GroupEPUrl-->
     </SCIM2>
+
     <!--Recovery>
         <Notification>
             <Password>
@@ -604,6 +612,7 @@
 	    <ExpiryTime>1440</ExpiryTime>
 	</VerificationCode>
     </SelfRegistration-->
+
     <!--
          This configuration is used to filter the SP configured role mappings. If the property value is,
 
@@ -615,96 +624,104 @@
 
          Default - false.
      -->
+
     <!--SPRoleManagement>
         <ReturnOnlyMappedLocalRoles>false</ReturnOnlyMappedLocalRoles>
     </SPRoleManagement-->
+
     <EnableAskPasswordAdminUI>true</EnableAskPasswordAdminUI>
+
     <EnableRecoveryEndpoint>true</EnableRecoveryEndpoint>
     <EnableSelfSignUpEndpoint>true</EnableSelfSignUpEndpoint>
+
     <AuthenticationPolicy>
         <CheckAccountExist>true</CheckAccountExist>
     </AuthenticationPolicy>
+
     <JITProvisioning>
         <UserNameProvisioningUI>/accountrecoveryendpoint/register.do</UserNameProvisioningUI>
         <PasswordProvisioningUI>/accountrecoveryendpoint/signup.do</PasswordProvisioningUI>
     </JITProvisioning>
+
     <EventListeners>
-        <EventListener enable="true"
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener"
                        name="org.wso2.carbon.user.mgt.workflow.userstore.UserStoreActionListener"
-                       orderId="10" type="org.wso2.carbon.user.core.listener.UserOperationEventListener"/>
-        <EventListener enable="false"
+                       orderId="10" enable="true"/>
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener"
                        name="org.wso2.carbon.identity.mgt.IdentityMgtEventListener"
-                       orderId="50" type="org.wso2.carbon.user.core.listener.UserOperationEventListener"/>
+                       orderId="50" enable="false"/>
         <!-- Enable the following SCIM 1.1 event listener and disable the SCIM2 event listener if SCIM 1.1 is
         used. -->
-        <EventListener enable="false"
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener"
                        name="org.wso2.carbon.identity.scim.common.listener.SCIMUserOperationListener"
-                       orderId="90" type="org.wso2.carbon.user.core.listener.UserOperationEventListener"/>
-        <EventListener enable="true"
+                       orderId="90" enable="false"/>
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener"
                        name="org.wso2.carbon.identity.scim2.common.listener.SCIMUserOperationListener"
-                       orderId="93" type="org.wso2.carbon.user.core.listener.UserOperationEventListener"/>
-        <EventListener enable="true"
+                       orderId="93" enable="true"/>
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener"
                        name="org.wso2.carbon.identity.governance.listener.IdentityMgtEventListener"
-                       orderId="95" type="org.wso2.carbon.user.core.listener.UserOperationEventListener"/>
-        <EventListener enable="true"
-                       name="org.wso2.carbon.identity.governance.listener.IdentityStoreEventListener"
-                       orderId="97" type="org.wso2.carbon.user.core.listener.UserOperationEventListener">
+                       orderId="95" enable="true"/>
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener" name="org.wso2.carbon.identity.governance.listener.IdentityStoreEventListener"
+                       orderId="97" enable="true">
             <Property name="Data.Store">org.wso2.carbon.identity.governance.store.JDBCIdentityDataStore</Property>
         </EventListener>
-        <EventListener enable="false"
+        <EventListener type="org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler"
                        name="org.wso2.carbon.identity.data.publisher.application.authentication.impl.DASLoginDataPublisherImpl"
-                       orderId="10" type="org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler"/>
-        <EventListener enable="false"
+                       orderId="10" enable="false"/>
+        <EventListener type="org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler"
                        name="org.wso2.carbon.identity.data.publisher.application.authentication.impl.DASSessionDataPublisherImpl"
-                       orderId="11" type="org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler"/>
-        <EventListener enable="true"
+                       orderId="11" enable="false"/>
+        <EventListener type="org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler"
                        name="org.wso2.carbon.identity.data.publisher.application.authentication.AuthnDataPublisherProxy"
-                       orderId="11" type="org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler"/>
+                       orderId="11" enable="true"/>
+
         <!-- Enable this listener to call DeleteEventRecorders. -->
-        <EventListener enable="false"
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener"
                        name="org.wso2.carbon.user.mgt.listeners.UserDeletionEventListener"
-                       orderId="98" type="org.wso2.carbon.user.core.listener.UserOperationEventListener"/>
-        <EventListener enable="true"
+                       orderId="98" enable="false"/>
+        <EventListener type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"
                        name="org.wso2.carbon.identity.application.authentication.framework.handler.request.impl.consent.ConsentMgtPostAuthnHandler"
-                       orderId="110" type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"/>
+                       orderId="110" enable="true"/>
+
         <!-- Post Authentication handlers for JIT provisioning, association and for handling subject identifier -->
-        <EventListener enable="true"
+        <EventListener type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"
                        name="org.wso2.carbon.identity.application.authentication.framework.handler.request.impl.JITProvisioningPostAuthenticationHandler"
-                       orderId="20" type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"/>
-        <EventListener enable="true"
+                       orderId="20" enable="true"/>
+        <EventListener type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"
                        name="org.wso2.carbon.identity.application.authentication.framework.handler.request.impl.PostAuthAssociationHandler"
-                       orderId="25" type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"/>
-        <EventListener enable="true"
+                       orderId="25" enable="true"/>
+        <EventListener type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"
                        name="org.wso2.carbon.identity.application.authentication.framework.handler.request.impl.PostAuthenticatedSubjectIdentifierHandler"
-                       orderId="30" type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"/>
+                       orderId="30" enable="true"/>
+
         <!-- Audit Loggers -->
+
         <!-- Old Audit Logger -->
-        <EventListener enable="false"
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener"
                        name="org.wso2.carbon.user.mgt.listeners.UserMgtAuditLogger"
-                       orderId="0" type="org.wso2.carbon.user.core.listener.UserOperationEventListener"/>
+                       orderId="0" enable="false"/>
+
         <!-- New Audit Loggers-->
-        <EventListener enable="true"
+        <EventListener type="org.wso2.carbon.user.core.listener.UserOperationEventListener"
                        name="org.wso2.carbon.user.mgt.listeners.UserManagementAuditLogger"
-                       orderId="1" type="org.wso2.carbon.user.core.listener.UserOperationEventListener"/>
-        <EventListener enable="true"
+                       orderId="1" enable="true"/>
+        <EventListener type="org.wso2.carbon.user.core.listener.UserManagementErrorEventListener"
                        name="org.wso2.carbon.user.mgt.listeners.UserMgtFailureAuditLogger"
-                       orderId="0" type="org.wso2.carbon.user.core.listener.UserManagementErrorEventListener"/>
-        <!-- Open Banking Mutual TLS Authenticator -->
-        <EventListener  enable="true"
-                        name="com.wso2.finance.open.banking.mtls.authenticator.OBMutualTLSClientAuthenticator"
-                        orderId="26" type="org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"/>
+                       orderId="0" enable="true"/>
     </EventListeners>
+
     <!-- These recorders are used to write user delete information to specific sources. Default event recorder is CSV
      file recorder. This recorder is disabled by default. Enable it by setting enable="true". To run these recorders,
      EventListener "rg.wso2.carbon.user.mgt.listeners.UserDeletionEventListener" also should be enabled. Which is
      also disabled by default. -->
     <UserDeleteEventRecorders>
-        <UserDeleteEventRecorder enable="false" name="org.wso2.carbon.user.mgt.recorder.DefaultUserDeletionEventRecorder">
+        <UserDeleteEventRecorder name="org.wso2.carbon.user.mgt.recorder.DefaultUserDeletionEventRecorder" enable="false">
             <!-- Un comment below line if you need to write entries to a separate .csv file. Otherwise this will be
             written in to a log file using a separate appender. -->
             <!--<Property name="path">${carbon.home}/repository/logs/delete-records.csv</Property>-->
         </UserDeleteEventRecorder>
     </UserDeleteEventRecorders>
+
     <CacheConfig>
         <!-- Identity cache configuration.
              Timeouts are in seconds.
@@ -712,223 +729,182 @@
              Unless specifically mentioned, you do not need to set the isDistributed flag.
          -->
         <CacheManager name="IdentityApplicationManagementCacheManager">
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="AppAuthFrameworkSessionContextCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="AuthenticationContextCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="AuthenticationRequestCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="AuthenticationResultCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="AppInfoCache" timeout="900"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="AuthorizationGrantCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="OAuthCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="OAuthScopeCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="OAuthSessionDataCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="SAMLSSOParticipantCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="SAMLSSOSessionIndexCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="SAMLSSOSessionDataCache" timeout="300"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="ServiceProviderCache" timeout="900"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="ProvisioningConnectorCache" timeout="900"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="ProvisioningEntityCache" timeout="900"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="ServiceProviderProvisioningConnectorCache" timeout="900"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="IdPCacheByAuthProperty" timeout="900"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="IdPCacheByHRI" timeout="900"/>
-            <Cache capacity="5000" enable="true" isDistributed="false"
-                   name="IdPCacheByName" timeout="900"/>
-            <Cache name="PrivateKeyJWT" enable="true" timeout="10" capacity="5000" isDistributed="false"/>
+            <Cache name="AppAuthFrameworkSessionContextCache"
+                                                     enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="AuthenticationContextCache" enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="AuthenticationRequestCache" enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="AuthenticationResultCache"  enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="AppInfoCache"               enable="true"  timeout="900" capacity="5000" isDistributed="false"/>
+            <Cache name="AuthorizationGrantCache"    enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="OAuthCache"                 enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="OAuthScopeCache"            enable="true"  timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="OAuthSessionDataCache"      enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="SAMLSSOParticipantCache"    enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="SAMLSSOSessionIndexCache"   enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="SAMLSSOSessionDataCache"    enable="true" timeout="300" capacity="5000" isDistributed="false"/>
+            <Cache name="ServiceProviderCache"       enable="true"  timeout="900" capacity="5000" isDistributed="false"/>
+            <Cache name="ProvisioningConnectorCache" enable="true"  timeout="900" capacity="5000" isDistributed="false"/>
+            <Cache name="ProvisioningEntityCache"    enable="true" timeout="900" capacity="5000" isDistributed="false"/>
+            <Cache name="ServiceProviderProvisioningConnectorCache" enable="true"  timeout="900" capacity="5000" isDistributed="false"/>
+            <Cache name="IdPCacheByAuthProperty"     enable="true"  timeout="900" capacity="5000" isDistributed="false"/>
+            <Cache name="IdPCacheByHRI"              enable="true"  timeout="900" capacity="5000" isDistributed="false"/>
+            <Cache name="IdPCacheByName"             enable="true"  timeout="900" capacity="5000" isDistributed="false"/>
         </CacheManager>
     </CacheConfig>
+
     <!--Cookies>
         <Cookie name="commonAuthId" domain="localhost" httpOnly="true" secure="true" />
     </Cookies-->
+
+
     <ResourceAccessControl>
-        <Resource context="(.*)/api/identity/user/v1.0/validate-code(.*)"
-                  http-method="all" secured="true">
+        <Resource context="(.*)/api/identity/user/v1.0/validate-code(.*)" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/identitymgt</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/user/v1.0/resend-code(.*)"
-                  http-method="all" secured="true"/>
-        <Resource context="(.*)/api/identity/user/v1.0/me(.*)"
-                  http-method="POST" secured="true"/>
-        <Resource context="(.*)/api/identity/user/v1.0/me(.*)" http-method="GET" secured="true"/>
-        <Resource context="(.*)/api/identity/user/v1.0/pi-info"
-                  http-method="all" secured="true">
+        <Resource context="(.*)/api/identity/user/v1.0/resend-code(.*)" secured="true" http-method="all"/>
+        <Resource context="(.*)/api/identity/user/v1.0/me(.*)" secured="true" http-method="POST"/>
+        <Resource context="(.*)/api/identity/user/v1.0/me(.*)" secured="true" http-method="GET"/>
+        <Resource context="(.*)/api/identity/user/v1.0/pi-info" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/usermgt/view</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/user/v1.0/pi-info/(.*)"
-                  http-method="all" secured="true">
+        <Resource context="(.*)/api/identity/user/v1.0/pi-info/(.*)" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/usermgt/view</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents"
-                  http-method="all" secured="true"/>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/receipts/(.*)"
-                http-method="all" secured="true"/>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/purposes(.*)"
-                http-method="POST" secured="true">
+
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents" secured="true" http-method="all"/>
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/receipts/(.*)" secured="true" http-method="all"/>
+
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/purposes(.*)" secured="true" http-method="POST">
             <Permissions>/permission/admin/manage/identity/consentmgt/add</Permissions>
         </Resource>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/purposes(.*)"
-                http-method="GET" secured="true"/>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/purposes(.+)"
-                http-method="DELETE" secured="true">
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/purposes(.*)" secured="true" http-method="GET"/>
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/purposes(.+)" secured="true" http-method="DELETE">
             <Permissions>/permission/admin/manage/identity/consentmgt/delete</Permissions>
         </Resource>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/pii-categories(.*)"
-                http-method="POST" secured="true">
+
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/pii-categories(.*)" secured="true" http-method="POST">
             <Permissions>/permission/admin/manage/identity/consentmgt/add</Permissions>
         </Resource>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/pii-categories(.*)"
-                http-method="GET" secured="true"/>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/pii-categories(.+)"
-                http-method="DELETE" secured="true">
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/pii-categories(.*)" secured="true" http-method="GET"/>
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/pii-categories(.+)" secured="true" http-method="DELETE">
             <Permissions>/permission/admin/manage/identity/consentmgt/delete</Permissions>
         </Resource>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/purpose-categories(.*)"
-                http-method="POST" secured="true">
+
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/purpose-categories(.*)" secured="true" http-method="POST">
             <Permissions>/permission/admin/manage/identity/consentmgt/add</Permissions>
         </Resource>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/purpose-categories(.*)"
-                http-method="GET" secured="true"/>
-        <Resource
-                context="(.*)/api/identity/consent-mgt/v1.0/consents/purpose-categories(.+)"
-                http-method="DELETE" secured="true">
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/purpose-categories(.*)" secured="true" http-method="GET"/>
+        <Resource context="(.*)/api/identity/consent-mgt/v1.0/consents/purpose-categories(.+)" secured="true" http-method="DELETE">
             <Permissions>/permission/admin/manage/identity/consentmgt/delete</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/recovery/(.*)" http-method="all" secured="true">
+
+        <Resource context="(.*)/api/identity/recovery/(.*)" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/identitymgt</Permissions>
         </Resource>
-        <Resource context="(.*)/.well-known(.*)" http-method="all" secured="true"/>
-        <Resource context="(.*)/api/identity/oauth2/dcr/v1.1/register(.*)"
-                  http-method="POST" secured="true">
+        <Resource context="(.*)/.well-known(.*)" secured="true" http-method="all"/>
+        <Resource context="(.*)/api/identity/oauth2/dcr/v1.1/register(.*)" secured="true" http-method="POST">
             <Permissions>/permission/admin/manage/identity/applicationmgt/create</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/oauth2/dcr/v1.1/register(.*)"
-                  http-method="DELETE" secured="true">
+        <Resource context="(.*)/api/identity/oauth2/dcr/v1.1/register(.*)" secured="true" http-method="DELETE">
             <Permissions>/permission/admin/manage/identity/applicationmgt/delete</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/oauth2/dcr/v1.1/register(.*)"
-                  http-method="PUT" secured="true">
+        <Resource context="(.*)/api/identity/oauth2/dcr/v1.1/register(.*)" secured="true" http-method="PUT">
             <Permissions>/permission/admin/manage/identity/applicationmgt/update</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/oauth2/dcr/v1.1/register(.*)"
-                  http-method="GET" secured="true">
+        <Resource context="(.*)/api/identity/oauth2/dcr/v1.1/register(.*)" secured="true" http-method="GET">
             <Permissions>/permission/admin/manage/identity/applicationmgt/view</Permissions>
         </Resource>
-        <Resource context="(.*)/identity/register(.*)" http-method="all" secured="true">
+        <Resource context="(.*)/identity/register(.*)" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/applicationmgt/delete</Permissions>
         </Resource>
-        <Resource context="(.*)/identity/connect/register(.*)" http-method="all" secured="true">
+        <Resource context="(.*)/identity/connect/register(.*)" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/applicationmgt/create</Permissions>
         </Resource>
-        <Resource context="(.*)/oauth2/introspect(.*)" http-method="all" secured="true">
+        <Resource context="(.*)/oauth2/introspect(.*)" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/applicationmgt/view</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/entitlement/(.*)" http-method="all" secured="true">
+        <Resource context="(.*)/api/identity/entitlement/(.*)" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/pep</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Users(.*)" http-method="POST" secured="true">
+        <Resource context="(.*)/scim2/Users(.*)" secured="true" http-method="POST">
             <Permissions>/permission/admin/manage/identity/usermgt/create</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Users" http-method="GET" secured="true">
+        <Resource context="(.*)/scim2/Users" secured="true" http-method="GET">
             <Permissions>/permission/admin/manage/identity/usermgt/list</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Groups(.*)" http-method="POST" secured="true">
+        <Resource context="(.*)/scim2/Groups(.*)" secured="true" http-method="POST">
             <Permissions>/permission/admin/manage/identity/rolemgt/create</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Groups" http-method="GET" secured="true">
+        <Resource context="(.*)/scim2/Groups" secured="true" http-method="GET">
             <Permissions>/permission/admin/manage/identity/rolemgt/view</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Users/(.*)" http-method="GET" secured="true">
+        <Resource context="(.*)/scim2/Users/(.*)" secured="true" http-method="GET">
             <Permissions>/permission/admin/manage/identity/usermgt/view</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Users/(.*)" http-method="PUT" secured="true">
+        <Resource context="(.*)/scim2/Users/(.*)" secured="true" http-method="PUT">
             <Permissions>/permission/admin/manage/identity/usermgt/update</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Users/(.*)" http-method="PATCH" secured="true">
+        <Resource context="(.*)/scim2/Users/(.*)" secured="true" http-method="PATCH">
             <Permissions>/permission/admin/manage/identity/usermgt/update</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Users/(.*)" http-method="DELETE" secured="true">
+        <Resource context="(.*)/scim2/Users/(.*)" secured="true" http-method="DELETE">
             <Permissions>/permission/admin/manage/identity/usermgt/delete</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Groups/(.*)" http-method="GET" secured="true">
+        <Resource context="(.*)/scim2/Groups/(.*)" secured="true" http-method="GET">
             <Permissions>/permission/admin/manage/identity/rolemgt/view</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Groups/(.*)" http-method="PUT" secured="true">
+        <Resource context="(.*)/scim2/Groups/(.*)" secured="true" http-method="PUT">
             <Permissions>/permission/admin/manage/identity/rolemgt/update</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Groups/(.*)" http-method="PATCH" secured="true">
+        <Resource context="(.*)/scim2/Groups/(.*)" secured="true" http-method="PATCH">
             <Permissions>/permission/admin/manage/identity/rolemgt/update</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Groups/(.*)" http-method="DELETE" secured="true">
+        <Resource context="(.*)/scim2/Groups/(.*)" secured="true" http-method="DELETE">
             <Permissions>/permission/admin/manage/identity/rolemgt/delete</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Me" http-method="GET" secured="true">
+        <Resource context="(.*)/scim2/Me" secured="true"    http-method="GET">
             <Permissions>/permission/admin/login</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Me" http-method="DELETE" secured="true">
+        <Resource context="(.*)/scim2/Me" secured="true" http-method="DELETE">
             <Permissions>/permission/admin/manage/identity/usermgt/delete</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Me" http-method="PUT" secured="true">
+        <Resource context="(.*)/scim2/Me" secured="true"    http-method="PUT">
             <Permissions>/permission/admin/login</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Me" http-method="PATCH" secured="true">
+        <Resource context="(.*)/scim2/Me" secured="true"   http-method="PATCH">
             <Permissions>/permission/admin/login</Permissions>
         </Resource>
-        <Resource context="(.*)/scim2/Me" http-method="POST" secured="true">
+        <Resource context="(.*)/scim2/Me" secured="true" http-method="POST">
             <Permissions>/permission/admin/manage/identity/usermgt/create</Permissions>
         </Resource>
-        <Resource context="/scim2/ServiceProviderConfig" http-method="all" secured="false">
-            <Permissions/>
+        <Resource context="/scim2/ServiceProviderConfig" secured="false" http-method="all">
+            <Permissions></Permissions>
         </Resource>
-        <Resource context="/scim2/ResourceType" http-method="all" secured="false">
-            <Permissions/>
+        <Resource context="/scim2/ResourceType" secured="false" http-method="all">
+            <Permissions></Permissions>
         </Resource>
-        <Resource context="/scim2/Bulk(.*)" http-method="all" secured="true">
+        <Resource context="/scim2/Bulk(.*)" secured="true"  http-method="all">
             <Permissions>/permission/admin/manage/identity/usermgt</Permissions>
         </Resource>
-        <Resource context="(.*)/api/identity/oauth2/dcr/(.*)" http-method="all" secured="true">
+        <Resource context="(.*)/api/identity/oauth2/dcr/(.*)" secured="true" http-method="all">
             <Permissions>/permission/admin/manage/identity/applicationmgt</Permissions>
         </Resource>
-        <Resource
-                context="(.*)/api/identity/oauth2/uma/resourceregistration/v1.0/(.*)"
-                http-method="all" secured="true"/>
-        <Resource context="(.*)/api/identity/oauth2/uma/permission/v1.0/(.*)"
-                  http-method="all" secured="true"/>
-        <Resource context="(.*)/api/identity/auth/(.*)" http-method="all" secured="true"/>
+
+        <Resource context="(.*)/api/identity/oauth2/uma/resourceregistration/v1.0/(.*)" secured="true" http-method="all"/>
+        <Resource context="(.*)/api/identity/oauth2/uma/permission/v1.0/(.*)" secured="true" http-method="all"/>
+        <Resource context="(.*)/api/identity/auth/(.*)" secured="true" http-method="all"/>
     </ResourceAccessControl>
+
     <ClientAppAuthentication>
-        <Application
-                hash="66cd9688a2ae068244ea01e70f0e230f5623b7fa4cdecb65070a09ec06452262" name="dashboard"/>
+        <Application name="dashboard" hash="66cd9688a2ae068244ea01e70f0e230f5623b7fa4cdecb65070a09ec06452262"/>
     </ClientAppAuthentication>
+
     <!--
     This property restricts federated user association done through UserProfileAdmin admin service.
     Would not affect associations done through provisioning
     -->
     <EnableFederatedUserAssociation>false</EnableFederatedUserAssociation>
+
     <TenantContextsToRewrite>
         <WebApp>
             <Context>/api/identity/user/v1.0/</Context>
@@ -943,8 +919,10 @@
             <Context>/identity/(.*)</Context>
         </Servlet>
     </TenantContextsToRewrite>
+
     <!-- Server Synchronization Tolerance Configuration in seconds -->
     <ClockSkew>300</ClockSkew>
+
     <!-- JWT validator configurations -->
     <JWTValidatorConfigs>
         <Enable>true</Enable>
@@ -954,31 +932,37 @@
             <HTTPSizeLimit>51200</HTTPSizeLimit>
         </JWKSEndpoint>
     </JWTValidatorConfigs>
+
     <AdaptiveAuth>
         <!--Default configs for event publisher-->
         <EventPublisher>
-            <!--Required in OB-->
-            <ReceiverURL>http://localhost:8006/</ReceiverURL>
-            <!--<BasicAuthentication>-->
-            <!--<Enable>true</Enable>-->
-            <!--<Username>admin</Username>-->
-            <!--<Password>admin</Password>-->
-            <!--</BasicAuthentication>-->
+            <ReceiverURL>https://localhost:8280/</ReceiverURL>
+            <BasicAuthentication>
+                <Enable>true</Enable>
+                <Username>admin</Username>
+                <Password>admin</Password>
+            </BasicAuthentication>
         </EventPublisher>
         <!--End of default configs for event publisher-->
+
         <AsyncSequenceExecutorPoolSize>5</AsyncSequenceExecutorPoolSize>
         <MaxTotalConnections>20</MaxTotalConnections>
         <MaxTotalConnectionsPerRoute>20</MaxTotalConnectionsPerRoute>
+
         <!--Timeouts in milliseconds-->
         <!--Default configs for timeouts-->
         <!--<HTTPConnectionTimeout>5000</HTTPConnectionTimeout>-->
         <!--<HTTPReadTimeout>5000</HTTPReadTimeout>-->
         <!--<HTTPConnectionRequestTimeout>5000</HTTPConnectionRequestTimeout>-->
         <!--End of default configs for timeouts-->
+
         <!--<RefreshInterval>500</RefreshInterval>-->
         <!--End of timeouts in milliseconds-->
+
         <!--<PromptOnLongWait>false</PromptOnLongWait>-->
+
         <!--Timeout in milliseconds for the waiting external calls-->
         <LongWaitTimeout>10000</LongWaitTimeout>
     </AdaptiveAuth>
+
 </Server>

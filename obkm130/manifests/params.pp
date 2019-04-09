@@ -22,8 +22,10 @@ class obkm130::params {
   $user_home = '/home/$user'
   $user_group_id = 802
   $service_name = 'wso2is'
-  $hostname = 'localhost'
-  $mgt_hostname = 'localhost'
+  $obkm_hostname = 'localhost'
+  $obsp_hostname = 'localhost'
+  $obam_hostname = 'obam_hostname'
+  $obkm_mgt_hostname = 'localhost'
   $enable_test_mode = 'false'
   $jdk_version = 'ORACLE_JDK8'
   $db_managment_system = 'CF_DBMS'
@@ -73,57 +75,57 @@ class obkm130::params {
 
   if $db_managment_system == 'mysql' {
     $wso2_reg_db_name = 'CF_DB_USERNAME'
-    $wso2_bps_db_name = 'CF_DB_USERNAME'
-    $wso2_user_db_name = 'CF_DB_USERNAME'
-    $wso2_identity_db_name = 'CF_DB_USERNAME'
+    $wso2_am_db_name = 'CF_DB_USERNAME'
+    $wso2_config_db_name = 'CF_DB_USERNAME'
+    $wso2_um_db_name = 'CF_DB_USERNAME'
     $wso2_consent_db_name = 'CF_DB_USERNAME'
-    $wso2_reg_db_url = 'jdbc:mysql://CF_RDS_URL:3306/WSO2IS_REG_DB?autoReconnect=true&amp;useSSL=false'
-    $wso2_bps_db_url = 'jdbc:mysql://CF_RDS_URL:3306/WSO2IS_BPS_DB?autoReconnect=true&amp;useSSL=false'
-    $wso2_user_db_url = 'jdbc:mysql://CF_RDS_URL:3306/WSO2IS_USER_DB?autoReconnect=true&amp;useSSL=false'
-    $wso2_identity_db_url = 'jdbc:mysql://CF_RDS_URL:3306/WSO2IS_IDENTITY_DB?autoReconnect=true&amp;useSSL=false'
-    $wso2_consent_db_url = 'jdbc:mysql://CF_RDS_URL:3306/WSO2IS_CONSENT_DB?autoReconnect=true&amp;useSSL=false'
+    $wso2_reg_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_govdb?autoReconnect=true&amp;useSSL=false'
+    $wso2_am_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_apimgtdb?autoReconnect=true&amp;useSSL=false'
+    $wso2_config_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_iskm_configdb?autoReconnect=true&amp;useSSL=false'
+    $wso2_um_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_userdb?autoReconnect=true&amp;useSSL=false'
+    $wso2_consent_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_consentdb?autoReconnect=true&amp;useSSL=false'
     $db_driver_class_name = 'com.mysql.jdbc.Driver'
     $db_connector = 'mysql-connector-java-5.1.41-bin.jar'
     $db_validation_query = 'SELECT 1'
   } elsif $db_managment_system =~ 'oracle' {
-    $wso2_reg_db_name = 'WSO2IS_REG_DB'
-    $wso2_bps_db_name = 'WSO2IS_BPS_DB'
-    $wso2_user_db_name = 'WSO2IS_USER_DB'
-    $wso2_identity_db_name = 'WSO2IS_IDENTITY_DB'
-    $wso2_consent_db_name = 'WSO2IS_CONSENT_DB'
+    $wso2_reg_db_name = 'openbank_govdb'
+    $wso2_am_db_name = 'openbank_apimgtdb'
+    $wso2_config_db_name = 'openbank_iskm_configdb'
+    $wso2_um_db_name = 'openbank_userdb'
+    $wso2_consent_db_name = 'openbank_consentdb'
     $wso2_reg_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
-    $wso2_bps_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
-    $wso2_user_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
-    $wso2_identity_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
-    $wso2_consent_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
+    $wso2_am_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
+    $wso2_config_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
+    $wso2_um_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
+    $wos2_consent_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
     $db_driver_class_name = 'oracle.jdbc.OracleDriver'
     $db_validation_query = 'SELECT 1 FROM DUAL'
     $db_connector = 'ojdbc8.jar'
   } elsif $db_managment_system == 'sqlserver-se' {
     $wso2_reg_db_name = 'CF_DB_USERNAME'
-    $wso2_bps_db_name = 'CF_DB_USERNAME'
-    $wso2_user_db_name = 'CF_DB_USERNAME'
-    $wso2_identity_db_name = 'CF_DB_USERNAME'
+    $wso2_am_db_name = 'CF_DB_USERNAME'
+    $wso2_config_db_name = 'CF_DB_USERNAME'
+    $wso2_um_db_name = 'CF_DB_USERNAME'
     $wso2_consent_db_name = 'CF_DB_USERNAME'
-    $wso2_reg_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2IS_REG_DB;SendStringParametersAsUnicode=false'
-    $wso2_bps_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2IS_BPS_DB;SendStringParametersAsUnicode=false'
-    $wso2_user_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2IS_USER_DB;SendStringParametersAsUnicode=false'
-    $wso2_identity_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2IS_IDENTITY_DB;SendStringParametersAsUnicode=false'
-    $wso2_consent_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2IS_CONSENT_DB;SendStringParametersAsUnicode=false'
+    $wso2_reg_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_govdb;SendStringParametersAsUnicode=false'
+    $wso2_am_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_apimgtdb;SendStringParametersAsUnicode=false'
+    $wso2_config_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_iskm_configdb;SendStringParametersAsUnicode=false'
+    $wso2_um_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_userdb;SendStringParametersAsUnicode=false'
+    $wso2_consent_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_consentdb;SendStringParametersAsUnicode=false'
     $db_driver_class_name = 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
     $db_connector = 'mssql-jdbc-7.0.0.jre8.jar'
     $db_validation_query = 'SELECT 1'
   } elsif $db_managment_system == 'postgres' {
     $wso2_reg_db_name = 'CF_DB_USERNAME'
-    $wso2_bps_db_name = 'CF_DB_USERNAME'
-    $wso2_user_db_name = 'CF_DB_USERNAME'
-    $wso2_identity_db_name = 'CF_DB_USERNAME'
+    $wso2_am_db_name = 'CF_DB_USERNAME'
+    $wso2_config_db_name = 'CF_DB_USERNAME'
+    $wso2_um_db_name = 'CF_DB_USERNAME'
     $wso2_consent_db_name = 'CF_DB_USERNAME'
-    $wso2_reg_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/WSO2IS_REG_DB'
-    $wso2_bps_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/WSO2IS_BPS_DB'
-    $wso2_user_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/WSO2IS_USER_DB'
-    $wso2_identity_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/WSO2IS_IDENTITY_DB'
-    $wso2_consent_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/WSO2IS_CONSENT_DB'
+    $wso2_reg_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_govdb'
+    $wso2_am_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_apimgtdb'
+    $wso2_config_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_iskm_configdb'
+    $wso2_um_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_userdb'
+    $wso2_consent_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_consentdb'
     $db_driver_class_name = 'org.postgresql.Driver'
     $db_connector = 'postgresql-42.2.5.jar'
     $db_validation_query = 'SELECT 1; COMMIT'
@@ -137,26 +139,26 @@ class obkm130::params {
     validation_query  => $db_validation_query,
   }
 
-  $wso2_bps_db = {
-    url               => $wso2_bps_db_url,
-    username          => $wso2_bps_db_name,
+  $wso2_am_db = {
+    url               => $wso2_am_db_url,
+    username          => $wso2_am_db_name,
     password          => $db_password,
     driver_class_name => $db_driver_class_name,
     validation_query  => $db_validation_query,
   }
 
 
-  $wso2_user_db = {
-    url               => $wso2_user_db_url,
-    username          => $wso2_user_db_name,
+  $wso2_config_db = {
+    url               => $wso2_config_db_url,
+    username          => $wso2_config_db_name,
     password          => $db_password,
     driver_class_name => $db_driver_class_name,
     validation_query  => $db_validation_query,
   }
 
-  $wso2_identity_db = {
-    url               => $wso2_identity_db_url,
-    username          => $wso2_identity_db_name,
+  $wso2_um_db = {
+    url               => $wso2_um_db_url,
+    username          => $wso2_um_db_name,
     password          => $db_password,
     driver_class_name => $db_driver_class_name,
     validation_query  => $db_validation_query,
