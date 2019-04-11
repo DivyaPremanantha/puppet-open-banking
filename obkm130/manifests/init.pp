@@ -149,12 +149,12 @@ class obkm130 inherits obkm130::params {
   #  source => "puppet:///modules/installers/private_ip_extractor.py",
   #}
 
-    # Copy jacoco agent to the installed directory
-    file { "/usr/lib/wso2/wso2obkm/1.3.0/wso2-obkm-1.3.0/lib/jacocoagent.jar":
-      owner  => $user,
-      group  => $user_group,
-      mode   => '0754',
-      source => "puppet:///modules/installers/jacocoagent.jar",
-    }
+  # Copy jacoco agent to the installed directory
+  file { "/usr/lib/wso2/wso2obkm/1.3.0/wso2-obkm-1.3.0/lib/jacocoagent.jar":
+    owner  => $user,
+    group  => $user_group,
+    mode   => '0754',
+    source => "puppet:///modules/installers/jacocoagent.jar",
+  }
 
 }

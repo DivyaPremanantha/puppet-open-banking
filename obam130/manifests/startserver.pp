@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-#  Copyright (c) 2018 WSO2, Inc. http://www.wso2.org
+#  Copyright (c) 2019 WSO2, Inc. http://www.wso2.org
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 #  limitations under the License.
 # ----------------------------------------------------------------------------
 
-# Class apim::startserver
+# Class obam::startserver
 # Starts the server as a service in the final stage.
-class apim260::startserver (
+class obam130::startserver (
   $service_name = $apim::params::service_name
 )
-  inherits apim260::params {
+  inherits obam130::params {
 
   # service { $service_name:
   #   ensure => running,

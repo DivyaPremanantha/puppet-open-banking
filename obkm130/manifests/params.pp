@@ -22,10 +22,11 @@ class obkm130::params {
   $user_home = '/home/$user'
   $user_group_id = 802
   $service_name = 'wso2is'
-  $obkm_hostname = 'localhost'
+  $obkm_hostname = 'OBKM_HOSTNAME'
   $obsp_hostname = 'localhost'
-  $obam_hostname = 'obam_hostname'
+  $obam_hostname = 'OBAM_HOSTNAME'
   $obkm_mgt_hostname = 'localhost'
+  $deployed_specification = 'UK'
   $enable_test_mode = 'false'
   $jdk_version = 'ORACLE_JDK8'
   $db_managment_system = 'CF_DBMS'
@@ -44,10 +45,15 @@ class obkm130::params {
 
   $template_list = [
     'repository/conf/datasources/master-datasources.xml',
-   # 'repository/conf/datasources/bps-datasources.xml',
+    'repository/conf/datasources/open-banking-datasources.xml',
+    'repository/conf/finance/open-banking.xml',
+    'repository/deployment/server/jaggeryapps/consentmgt/configs/conf.json',
+    'repository/deployment/server/jaggeryapps/ccportal/configs/conf.json',
+    'repository/conf/identity/application-authentication.xml',
     'repository/conf/identity/identity.xml',
     'repository/conf/carbon.xml',
-   # 'repository/conf/user-mgt.xml',
+    'repository/conf/user-mgt.xml',
+   # 'repository/conf/datasources/bps-datasources.xml',
    # 'repository/conf/axis2/axis2.xml',
    # 'repository/conf/registry.xml',
    # 'repository/conf/tomcat/catalina-server.xml',
@@ -55,7 +61,7 @@ class obkm130::params {
    # 'repository/conf/log4j.properties',
   ]
 
-  $clustering               = {
+  $clustering = {
     enabled => true,
   }
 
@@ -83,7 +89,7 @@ class obkm130::params {
     $wso2_am_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_apimgtdb?autoReconnect=true&amp;useSSL=false'
     $wso2_config_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_iskm_configdb?autoReconnect=true&amp;useSSL=false'
     $wso2_um_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_userdb?autoReconnect=true&amp;useSSL=false'
-    $wso2_consent_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_consentdb?autoReconnect=true&amp;useSSL=false'
+    $wso2_consent_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_consent_db?autoReconnect=true&amp;useSSL=false'
     $db_driver_class_name = 'com.mysql.jdbc.Driver'
     $db_connector = 'mysql-connector-java-5.1.41-bin.jar'
     $db_validation_query = 'SELECT 1'
@@ -92,7 +98,7 @@ class obkm130::params {
     $wso2_am_db_name = 'openbank_apimgtdb'
     $wso2_config_db_name = 'openbank_iskm_configdb'
     $wso2_um_db_name = 'openbank_userdb'
-    $wso2_consent_db_name = 'openbank_consentdb'
+    $wso2_consent_db_name = 'openbank_consent_db'
     $wso2_reg_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
     $wso2_am_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
     $wso2_config_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
@@ -111,7 +117,7 @@ class obkm130::params {
     $wso2_am_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_apimgtdb;SendStringParametersAsUnicode=false'
     $wso2_config_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_iskm_configdb;SendStringParametersAsUnicode=false'
     $wso2_um_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_userdb;SendStringParametersAsUnicode=false'
-    $wso2_consent_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_consentdb;SendStringParametersAsUnicode=false'
+    $wso2_consent_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_consent_db;SendStringParametersAsUnicode=false'
     $db_driver_class_name = 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
     $db_connector = 'mssql-jdbc-7.0.0.jre8.jar'
     $db_validation_query = 'SELECT 1'
@@ -125,7 +131,7 @@ class obkm130::params {
     $wso2_am_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_apimgtdb'
     $wso2_config_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_iskm_configdb'
     $wso2_um_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_userdb'
-    $wso2_consent_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_consentdb'
+    $wso2_consent_db_url = 'jdbc:postgresql://CF_RDS_URL:5432/openbank_consent_db'
     $db_driver_class_name = 'org.postgresql.Driver'
     $db_connector = 'postgresql-42.2.5.jar'
     $db_validation_query = 'SELECT 1; COMMIT'
@@ -146,7 +152,6 @@ class obkm130::params {
     driver_class_name => $db_driver_class_name,
     validation_query  => $db_validation_query,
   }
-
 
   $wso2_config_db = {
     url               => $wso2_config_db_url,
@@ -173,7 +178,7 @@ class obkm130::params {
   }
 
   # Carbon.xml
-  $ports_offset = 0
+  $ports_offset = 3
 
   # user-mgt.xml
   $enable_scim = true

@@ -20,8 +20,8 @@
             <AddAdmin>true</AddAdmin>
             <AdminRole>admin</AdminRole>
             <AdminUser>
-                <UserName>admin</UserName>
-                <Password>admin</Password>
+                <UserName>admin@wso2.com</UserName>
+                <Password>wso2123</Password>
             </AdminUser>
             <EveryOneRoleName>everyone</EveryOneRoleName>
             <!-- By default users in this role sees the registry root -->
@@ -43,8 +43,8 @@
             <Property name="ReadOnly">false</Property>
             <Property name="ReadGroups">true</Property>
             <Property name="WriteGroups">true</Property>
-            <Property name="UsernameJavaRegEx">^[\S]{3,30}$</Property>
-            <Property name="UsernameJavaScriptRegEx">^[\S]{3,30}$</Property>
+            <Property name="UsernameJavaRegEx">a-zA-Z0-9@._-{3,30}$</Property>
+            <Property name="UsernameJavaScriptRegEx">^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$</Property>
             <Property name="UsernameJavaRegExViolationErrorMsg">Username pattern policy violated</Property>
             <Property name="PasswordJavaRegEx">^[\S]{5,30}$</Property>
             <Property name="PasswordJavaScriptRegEx">^[\S]{5,30}$</Property>
@@ -53,7 +53,7 @@
             <Property name="RolenameJavaScriptRegEx">^[\S]{3,30}$</Property>
             <Property name="CaseInsensitiveUsername">true</Property>
             <Property name="SCIMEnabled">false</Property>
-            <Property name="IsBulkImportSupported">true</Property>
+            <Property name="IsBulkImportSupported">false</Property>
             <Property name="PasswordDigest">SHA-256</Property>
             <Property name="StoreSaltedPassword">true</Property>
             <Property name="MultiAttributeSeparator">,</Property>
@@ -61,6 +61,7 @@
             <Property name="MaxRoleNameListLength">100</Property>
             <Property name="UserRolesCacheEnabled">true</Property>
             <Property name="UserNameUniqueAcrossTenants">false</Property>
+	    <Property name="UsernameWithEmailJavaScriptRegEx">^[\S]{3,30}$</Property>
         </UserStoreManager>
         <!-- If product is using an external LDAP as the user store in READ ONLY mode, use following user manager.
 		     In case if user core cache domain is needed to identify uniquely set property

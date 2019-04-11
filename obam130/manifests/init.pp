@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-#  Copyright (c) 2018 WSO2, Inc. http://www.wso2.org
+#  Copyright (c) 2019 WSO2, Inc. http://www.wso2.org
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 #  limitations under the License.
 # ----------------------------------------------------------------------------
 
-# Class: apim
+# Class: obam
 # Init class of API Manager default profile
 
-class apim260 inherits apim260::params{
+class obam130 inherits obam130::params{
   # Create wso2 group
   group { $user_group:
     ensure => present,
@@ -46,20 +46,20 @@ class apim260 inherits apim260::params{
     group  => $user_group,
   }
 
-  file { "/usr/lib/wso2/wso2am/":
+  file { "/usr/lib/wso2/wso2obam/":
     ensure => directory,
     owner  => $user,
     group  => $user_group,
   }
 
-  file { "/usr/lib/wso2/wso2am/2.6.0/":
+  file { "/usr/lib/wso2/wso2obam/1.3.0/":
     ensure => directory,
     owner  => $user,
     group  => $user_group,
   }
 
   # Copy the relevant installer to the /opt/is directory
-  file { "/usr/lib/wso2/wso2am/2.6.0/${am_package}":
+  file { "/usr/lib/wso2/wso2obam/1.3.0/${am_package}":
     owner  => $user,
     group  => $user_group,
     mode   => '0644',
@@ -68,13 +68,13 @@ class apim260 inherits apim260::params{
 
   # Install WSO2 Identity Server
   exec { 'unzip':
-    command => 'unzip wso2am-2.6.0.zip',
-    cwd     => '/usr/lib/wso2/wso2am/2.6.0/',
+    command => 'unzip wso2-obam-1.3.0.zip',
+    cwd     => '/usr/lib/wso2/wso2obam/1.3.0/',
     path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
   }
 
   #jdk JDK
-  file { "/usr/lib/wso2/wso2am/2.6.0/${jdk_type}":
+  file { "/usr/lib/wso2/wso2obam/1.3.0/${jdk_type}":
     owner  => $user,
     group  => $user_group,
     mode   => '0644',
@@ -84,14 +84,14 @@ class apim260 inherits apim260::params{
   # Install WSO2 Identity Server
   exec { 'tar':
     command => "tar -xvf ${jdk_type}",
-    cwd     => '/usr/lib/wso2/wso2am/2.6.0/',
+    cwd     => '/usr/lib/wso2/wso2obam/1.3.0/',
     path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
   }
 
 
   # Copy configuration changes to the installed directory
   $template_list.each | String $template | {
-    file { "/usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/${template}":
+    file { "/usr/lib/wso2/wso2obam/1.3.0/wso2-obam-1.3.0/${template}":
       ensure  => file,
       owner   => $user,
       group   => $user_group,
@@ -101,7 +101,7 @@ class apim260 inherits apim260::params{
   }
 
   # Copy wso2server.sh to installed directory
-  file { "/usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/${start_script_template}":
+  file { "/usr/lib/wso2/wso2obam/1.3.0/wso2-obam-1.3.0/${start_script_template}":
     ensure  => file,
     owner   => $user,
     group   => $user_group,
@@ -110,7 +110,7 @@ class apim260 inherits apim260::params{
   }
 
   # Copy mysql connector to the installed directory
-  file { "/usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/components/lib/${db_connector}":
+  file { "/usr/lib/wso2/wso2obam/1.3.0/wso2-obam-1.3.0/repository/components/lib/${db_connector}":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -134,7 +134,7 @@ class apim260 inherits apim260::params{
   }
 
   # Copy jacocoagent to the installed directory
-  file { "/usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/lib/jacocoagent.jar":
+  file { "/usr/lib/wso2/wso2obam/1.3.0/wso2-obam-1.3.0/lib/jacocoagent.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',

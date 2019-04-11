@@ -23,7 +23,6 @@
                     <testOnBorrow>true</testOnBorrow>
                     <validationQuery>SELECT 1</validationQuery>
                     <validationInterval>30000</validationInterval>
-                    <defaultAutoCommit>true</defaultAutoCommit>
                 </configuration>
             </definition>
         </datasource>
@@ -36,18 +35,18 @@
             </jndiConfig>
             <definition type="RDBMS">
                 <configuration>
-                    <url><%= @wso2_am_db['url'] %></url>
-                    <username><%= @wso2_am_db['username'] %></username>
-                    <password><%= @wso2_am_db['password'] %></password>
-                    <driverClassName><%= @wso2_am_db['driver_class_name'] %></driverClassName>
-                    <maxActive>50</maxActive>
-                    <maxWait>60000</maxWait>
-                    <minIdle>5</minIdle>
-                    <testOnBorrow>true</testOnBorrow>
-                    <validationQuery><%= @wso2_am_db['validation_query'] %></validationQuery>
-                    <validationInterval>30000</validationInterval>
-                    <defaultAutoCommit>true</defaultAutoCommit>
-                </configuration>
+                 	<!--<url>jdbc:mysql://mysql_host:3306/openbank_apimgtdb?autoReconnect=true&amp;useSSL=false</url>-->
+                    	<url><%= @wso2_am_db['url'] %></url>
+                 	<username><%= @wso2_am_db['username'] %></username>
+                 	<password><%= @wso2_am_db['password'] %></password>
+                 	<driverClassName><%= @wso2_am_db['driver_class_name'] %></driverClassName>
+                 	<maxActive>150</maxActive>
+                 	<maxWait>60000</maxWait>
+                 	<testOnBorrow>true</testOnBorrow>
+                 	<validationQuery><%= @wso2_am_db['validation_query'] %></validationQuery>
+                 	<validationInterval>30000</validationInterval>	
+					<defaultAutoCommit>false</defaultAutoCommit>				
+           	</configuration>
             </definition>
         </datasource>
 
@@ -59,16 +58,17 @@
             </jndiConfig>
             <definition type="RDBMS">
                 <configuration>
-                    <url>jdbc:h2:../tmpStatDB/WSO2AM_STATS_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;AUTO_SERVER=TRUE</url>
-                    <username>wso2carbon</username>
-                    <password>wso2carbon</password>
-                    <defaultAutoCommit>true</defaultAutoCommit>
-                    <driverClassName>org.h2.Driver</driverClassName>
-                    <maxActive>50</maxActive>
+		            <!--<url>jdbc:mysql://mysql_host:3306/openbank_apimgt_statsdb?autoReconnect=true&amp;useSSL=false</url>-->
+		            <url><%= @wso2_am_stat_db['url'] %></url>
+              	    <username><%= @wso2_am_stat_db['username'] %></username>
+              	    <password><%= @wso2_am_stat_db['password'] %></password>
+             	    <driverClassName><%= @wso2_am_stat_db['driver_class_name'] %></driverClassName>
+                    <maxActive>150</maxActive>
                     <maxWait>60000</maxWait>
                     <testOnBorrow>true</testOnBorrow>
-                    <validationQuery>SELECT 1</validationQuery>
+                    <validationQuery><%= @wso2_am_stat_db['validation_query'] %></validationQuery>
                     <validationInterval>30000</validationInterval>
+                    <defaultAutoCommit>false</defaultAutoCommit>
                 </configuration>
             </definition>
          </datasource>
@@ -81,65 +81,88 @@
             </jndiConfig>
             <definition type="RDBMS">
                 <configuration>
-                    <url>jdbc:h2:repository/database/WSO2MB_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000</url>
-                    <username>wso2carbon</username>
-                    <password>wso2carbon</password>
-                    <driverClassName>org.h2.Driver</driverClassName>
-                    <maxActive>50</maxActive>
-                    <maxWait>60000</maxWait>
-                    <testOnBorrow>true</testOnBorrow>
-                    <validationQuery>SELECT 1</validationQuery>
-                    <validationInterval>30000</validationInterval>
-                    <defaultAutoCommit>false</defaultAutoCommit>
-                </configuration>
+                 	<!--<url>jdbc:mysql://mysql_host:3306/openbank_mbstoredb?autoReconnect=true&amp;useSSL=false</url>-->
+                 	<url><%= @wso2_mb_store_db['url'] %></url>
+                 	<username><%= @wso2_mb_store_db['username'] %></username>
+                 	<password><%= @wso2_mb_store_db['password'] %></password>
+                 	<driverClassName><%= @wso2_mb_store_db['driver_class_name'] %></driverClassName>
+                 	<maxActive>150</maxActive>
+                 	<maxWait>60000</maxWait>
+                 	<testOnBorrow>true</testOnBorrow>
+                 	<validationQuery><%= @wso2_mb_store_db['validation_query'] %></validationQuery>
+                 	<validationInterval>30000</validationInterval>
+			        <defaultAutoCommit>false</defaultAutoCommit>
+           	</configuration>
             </definition>
         </datasource>
 
-        <datasource>
-            <name>WSO2UM_DB</name>
-            <description>The datasource used by user manager</description>
-            <jndiConfig>
-                <name>jdbc/WSO2UM_DB</name>
-            </jndiConfig>
-            <definition type="RDBMS">
-                <configuration>
-                    <url><%= @wso2_um_db['url'] %></url>
-                    <username><%= @wso2_um_db['username'] %></username>
-                    <password><%= @wso2_um_db['password'] %></password>
-                    <driverClassName><%= @wso2_um_db['driver_class_name'] %></driverClassName>
-                    <maxActive>50</maxActive>
-                    <maxWait>60000</maxWait>
-                    <minIdle>5</minIdle>
-                    <testOnBorrow>true</testOnBorrow>
-                    <validationQuery><%= @wso2_um_db['validation_query'] %></validationQuery>
-                    <validationInterval>30000</validationInterval>
-                    <defaultAutoCommit>true</defaultAutoCommit>
-                </configuration>
-            </definition>
-        </datasource>
+	   <datasource>
+         	<name>WSO2UM_DB</name>
+         	<description>The datasource used by user manager</description>
+         	<jndiConfig>
+           	<name>jdbc/WSO2UM_DB</name>
+         	</jndiConfig>
+         	<definition type="RDBMS">
+           	<configuration>
+                 	<!--<url>jdbc:mysql://mysql_host:3306/openbank_userdb?autoReconnect=true&amp;useSSL=false</url>-->
+                 	<url><%= @wso2_um_db['url'] %></url>
+                 	<username><%= @wso2_um_db['username'] %></username>
+                 	<password><%= @wso2_um_db['password'] %></password>
+                 	<driverClassName><%= @wso2_um_db['driver_class_name'] %></driverClassName>
+                 	<maxActive>150</maxActive>
+                 	<maxWait>60000</maxWait>
+                 	<testOnBorrow>true</testOnBorrow>
+                 	<validationQuery><%= @wso2_um_db['validation_query'] %></validationQuery>
+                 	<validationInterval>30000</validationInterval>
+					<defaultAutoCommit>false</defaultAutoCommit>
+           	</configuration>
+         	</definition>
+    	</datasource>
 
-        <datasource>
-            <name>WSO2REG_DB</name>
-            <description>The datasource used by the registry</description>
-            <jndiConfig>
-                <name>jdbc/WSO2REG_DB</name>
-            </jndiConfig>
-            <definition type="RDBMS">
-                <configuration>
-                    <url><%= @wso2_reg_db['url'] %></url>
-                    <username><%= @wso2_reg_db['username'] %></username>
-                    <password><%= @wso2_reg_db['password'] %></password>
-                    <driverClassName><%= @wso2_reg_db['driver_class_name'] %></driverClassName>
-                    <maxActive>50</maxActive>
-                    <maxWait>60000</maxWait>
-                    <minIdle>5</minIdle>
-                    <testOnBorrow>true</testOnBorrow>
-                    <validationQuery><%= @wso2_reg_db['validation_query'] %></validationQuery>
-                    <validationInterval>30000</validationInterval>
-                    <defaultAutoCommit>true</defaultAutoCommit>
-                </configuration>
-            </definition>
-        </datasource>
+      <datasource>         
+	        <name>WSO2CONFIG_DB</name>
+         	<description>The datasource used by the registry</description>
+         	<jndiConfig>
+           	<name>jdbc/WSO2Config_DB</name>
+         	</jndiConfig>
+         	<definition type="RDBMS">
+           	<configuration>
+                 	<!--<url>jdbc:mysql://mysql_host:3306/openbank_am_configdb?autoReconnect=true&amp;useSSL=false</url>-->
+                 	<url><%= @wso2_config_db['url'] %></url>
+                 	<username><%= @wso2_config_db['username'] %></username>
+                 	<password><%= @wso2_config_db['password'] %></password>
+                 	<driverClassName><%= @wso2_config_db['driver_class_name'] %></driverClassName>
+                 	<maxActive>150</maxActive>
+                 	<maxWait>60000</maxWait>
+                 	<testOnBorrow>true</testOnBorrow>
+                 	<validationQuery><%= @wso2_config_db['validation_query'] %></validationQuery>
+                 	<validationInterval>30000</validationInterval>
+			        <defaultAutoCommit>false</defaultAutoCommit>
+           	</configuration>
+         	</definition>
+    	</datasource>
+    	<datasource>
+         	<name>WSO2REG_DB</name>
+         	<description>The datasource used by the registry</description>
+         	<jndiConfig>
+           	<name>jdbc/WSO2REG_DB</name>
+         	</jndiConfig>
+         	<definition type="RDBMS">
+           	<configuration>
+                 	<!--<url>jdbc:mysql://mysql_host:3306/openbank_govdb?autoReconnect=true&amp;useSSL=false</url>-->
+                 	<url><%= @wso2_reg_db['url'] %></url>
+                 	<username><%= @wso2_reg_db['username'] %></username>
+                 	<password><%= @wso2_reg_db['password'] %></password>
+                 	<driverClassName><%= @wso2_reg_db['driver_class_name'] %></driverClassName>
+                 	<maxActive>150</maxActive>
+                 	<maxWait>60000</maxWait>
+                 	<testOnBorrow>true</testOnBorrow>
+                 	<validationQuery><%= @wso2_reg_db['validation_query'] %></validationQuery>
+                 	<validationInterval>30000</validationInterval>
+			        <defaultAutoCommit>false</defaultAutoCommit>
+           	</configuration>
+         	</definition>
+    	</datasource>
 
         <!-- For an explanation of the properties, see: http://people.apache.org/~fhanik/jdbc-pool/jdbc-pool.html -->
         <!--datasource>
