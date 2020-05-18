@@ -45,7 +45,7 @@ class ob_common inherits ob_common::params {
 
   # Copy JDK to Java distribution path
   file { 'jdk-distribution':
-    path   => "${jdk_file_name}",
+    path   => "${java_dir}/${jdk_file_name}",
     source => "puppet:///modules/installers/${jdk_file_name}",
     notify => Exec['unpack-jdk']
   }
@@ -83,7 +83,7 @@ class ob_common inherits ob_common::params {
     owner   => $user,
     group   => $user_group,
     mode    => '0644',
-    source  => "puppet:///modules/${module_name}/packs/${product_binary}",
+    source  => "puppet:///modules/installers/${product_binary}",
     require => File["${product_dir}", "${pack_dir}"],
   }
 
