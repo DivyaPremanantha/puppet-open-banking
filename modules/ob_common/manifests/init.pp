@@ -45,14 +45,14 @@ class ob_common inherits ob_common::params {
 
   # Copy JDK to Java distribution path
   file { 'jdk-distribution':
-    path   => "${java_home}.tar.gz",
-    source => "puppet:///modules/${module_name}/jdk/${jdk_name}.tar.gz",
+    path   => "${jdk_file_name}",
+    source => "puppet:///modules/installers/${jdk_file_name}",
     notify => Exec['unpack-jdk']
   }
 
   # Unzip distribution
   exec { 'unpack-jdk':
-    command     => "tar -xf ${java_home}.tar.gz",
+    command     => "tar -xf ${jdk_file_name}",
     path        => '/bin/',
     cwd         => $java_dir,
     onlyif      => "/usr/bin/test ! -d ${java_home}",
@@ -110,7 +110,7 @@ class ob_common inherits ob_common::params {
     command => "unzip -o ${product_binary} -d ${product_dir}",
     path    => "/usr/bin/",
     user    => $user,
-    group   => $user_group,                         
+    group   => $user_group,
     cwd     => "${pack_dir}",
   }
 
@@ -127,5 +127,5 @@ class ob_common inherits ob_common::params {
     path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
     subscribe   => File["/etc/systemd/system/${wso2_service_name}.service"],
     refreshonly => true,
-  } 
+  }
 }

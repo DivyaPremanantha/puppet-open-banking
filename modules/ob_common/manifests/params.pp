@@ -25,9 +25,21 @@ class ob_common::params {
   $user_group_id  = 802
 
   # JDK distributions
+  $jdk_version = 'JDK_TYPE'
   $java_dir     = '/opt'
   $java_symlink = "${java_dir}/java"
-  $jdk_name     = 'jdk1.8.0_161'
+
+  if $jdk_version == 'Oracle_JDK8' {
+    $jdk_file_name = "jdk-8u144-linux-x64.tar.gz"
+    $jdk_name = "jdk1.8.0_144"
+  } elsif $jdk_version == 'OPEN_JDK8' {
+    $jdk_file_name = "jdk-8u192-ea-bin-b02-linux-x64-19_jul_2018.tar.gz"
+    $jdk_name = "jdk1.8.0_192"
+  } elsif $jdk_version == 'ADOPT_OPEN_JDK11' {
+    $jdk_type = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz"
+    $jdk_path = "jdk-11.0.5+10"
+  }
+  
   $java_home    = "${java_dir}/${jdk_name}"
 
   $wso2_service_name  = "wso2${profile}"
@@ -52,8 +64,8 @@ class ob_common::params {
   $bps_hostname       = 'localhost'
 
   # jaggeryapps/admin/site/conf/site.json,openbaking.xml params
-  $spec = 'UK' #UK,Berlin or STET 
-  
+  $spec = 'UK' #UK,Berlin or STET
+
   # DBMS related variables
 
   # master-datasources.xml params
