@@ -21,7 +21,7 @@ This repository contains the Puppet modules for WSO2 Open Banking.
     matches with the name of the extracted folder Ex: jdk1.8.0_161) <br>
     b. Reassign the *$jdk_name* variable in `<puppet_environment>/modules/ob_common/manifests/params.pp` to the name of the downloaded JDK distribution.
    
-3. Set up the databases in the **Puppet agent** by following the [Configuring Databases](https://docs.wso2.com/display/OB200/Configuring+Databases+for+UK) documentation..
+3. Set up the databases in the **Puppet agent** by following the [Configuring Databases](https://docs.wso2.com/display/OB200/Configuring+Databases+for+UK) documentation.
 
 4. Run the following profiles on the **Puppet agent**, by executing the following commands.
 
