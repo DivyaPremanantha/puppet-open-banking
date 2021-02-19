@@ -314,13 +314,6 @@ permissions=["/permission/admin"]
 url = "https://localhost:8280/"
 authentication.basic.enable = true
 
-#================configs related to application-authentication.xml=============
-
-[authentication.endpoints]
-login_url = "https://<%= @iam_hostname %>:9446/authenticationendpoint/login.do"
-retry_url = "https://<%= @iam_hostname %>:9446/authenticationendpoint/retry.do"
-request_missing_claims_url = "https://<%= @iam_hostname %>:9446/authenticationendpoint/claims.do"
-
 #================configs related to identity-event.properties=============
 
 [[event_handler]]

@@ -161,11 +161,12 @@ receiver_username = "$ref{super_admin.username}@carbon.super"
 
 [apim.analytics]
 enable = false
-receiver_urls = "{tcp://<%= @apim_hostname %>:7612}"
+receiver_urls = "{tcp://<%= @analytics_hostname %>:7612}"
 event_publisher_impl = "com.wso2.finance.open.banking.gateway.uk.monitoring.publisher.OBUsageDataBridgeDataPublisher"
 receiver_username = "$ref{super_admin.username}@carbon.super"
 receiver_password = "$ref{super_admin.password}"
 store_api_username = "$ref{super_admin.username}@carbon.super"
+store_api_url = "https://<%= @analytics_hostname %>:7444"
 
 [apim.key_manager]
 service_url = "https://<%= @iam_hostname %>:9446${carbon.context}services/"
@@ -314,13 +315,6 @@ permissions=["/permission/admin"]
 url = "https://localhost:8280/"
 authentication.basic.enable = true
 
-#================configs related to application-authentication.xml=============
-
-[authentication.endpoints]
-login_url = "https://<%= @iam_hostname %>:9446/authenticationendpoint/login.do"
-retry_url = "https://<%= @iam_hostname %>:9446/authenticationendpoint/retry.do"
-request_missing_claims_url = "https://<%= @iam_hostname %>:9446/authenticationendpoint/claims.do"
-
 #================configs related to identity-event.properties=============
 
 [[event_handler]]
@@ -336,7 +330,7 @@ config.password = "<%= @db_open_banking_store_password %>"
 config.driver = "<%= @db_open_banking_store_driver %>"
 
 [open_banking_database.config.pool_options]
-maxActive = "150"
+maxActive = "300"
 maxWait = "60000"
 minIdle ="5"
 testOnBorrow = true
@@ -363,7 +357,7 @@ api_url = "https://<%= @apim_hostname %>:8243/open-banking/v3.1/event-notificati
 holder_identifier = "<!--configure bank specific identifier-->"
 
 [open_banking.au.push_authorisation]
-expiry_time = "1"
+expiry_time = "60"
 
 [open_banking.au.metadata_cache]
 default_timeout = 1
@@ -415,3 +409,15 @@ invalid_submission_url = "http://<%= @analytics_hostname %>:8006/InvalidSubmissi
 
 [open_banking.account_id_validation_on_retrieval]
 enable = false
+
+[open_banking.jwt_authentication_handler]
+enable = true
+issuer = "cdr-register"
+subject = "cdr-register"
+audience = "https://wso2-ob/cds-au"
+jwks_url = ""
+cache_expiry_time = "1440"
+
+[open_banking.sca]
+primary_authenticator.name="OBIdentifierExecutor"
+primary_authenticator.display_name="ob-identifier-first"

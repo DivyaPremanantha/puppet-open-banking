@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------
-#  Copyright (c) 2021 WSO2, Inc. http://www.wso2.org
+#  Copyright (c) 2019 WSO2, Inc. http://www.wso2.org
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -42,15 +42,12 @@ class ob_common::params {
 
   $java_home    = "${java_dir}/${jdk_name}"
 
-
-  $wso2_service_name  = "wso2${profile}"
   $version            = '2.0.0'
-
 
   $target         = '/mnt'
   $product_dir    = "${target}/${profile}"
   $pack_dir       = "${target}/${profile}/packs"
-
+  $wso2_service_name  = "wso2${profile}"
 
   # Profile configurations
   case $profile {
@@ -103,6 +100,10 @@ class ob_common::params {
     $am_config_db_user_name = 'CF_DB_USERNAME'
     $iam_config_db_user_name = 'CF_DB_USERNAME'
     $ob_db_user_name = 'CF_DB_USERNAME'
+    $geo_location_db_user_name = 'CF_DB_USERNAME'
+    $ob_reporting_db_user_name = 'CF_DB_USERNAME'
+    $ob_reporting_summarized_db_user_name = 'CF_DB_USERNAME'
+
 
     $wso2_reg_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_govdb?autoReconnect=true&amp;useSSL=false'
     $wso2_um_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_userdb?autoReconnect=true&amp;useSSL=false'
@@ -111,6 +112,10 @@ class ob_common::params {
     $wso2_iam_config_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_iskm_configdb?autoReconnect=true&amp;useSSL=false'
     $wso2_am_stat_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_apimgt_statsdb?autoReconnect=true&amp;useSSL=false'
     $wso2_ob_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_openbankingdb?autoReconnect=true&amp;useSSL=false'
+    $wso2_geo_location_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_geolocationdb?autoReconnect=true&amp;useSSL=false'
+    $wso2_ob_reporting_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_ob_reporting_statsdb?autoReconnect=true&amp;useSSL=false'
+    $wso2_ob_reporting_summarized_db_url = 'jdbc:mysql://CF_RDS_URL:3306/openbank_ob_reporting_summarizeddb?autoReconnect=true&amp;useSSL=false'
+
 
     $db_driver_class_name = 'com.mysql.jdbc.Driver'
     $db_connector = 'mysql-connector-java-5.1.41-bin.jar'
@@ -124,6 +129,9 @@ class ob_common::params {
     $am_config_db_user_name = 'openbank_am_configdb'
     $iam_config_db_user_name = 'openbank_iskm_configdb'
     $ob_db_user_name = 'openbank_openbankingdb'
+    $geo_location_db_user_name = 'CF_DB_USERNAME'
+    $ob_reporting_db_user_name = 'CF_DB_USERNAME'
+    $ob_reporting_summarized_db_user_name = 'CF_DB_USERNAME'
 
     $wso2_reg_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
     $wso2_um_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
@@ -132,6 +140,9 @@ class ob_common::params {
     $wso2_iam_config_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
     $wso2_am_stat_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
     $wso2_ob_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
+    $wso2_geo_location_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
+    $wso2_ob_reporting_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
+    $wso2_ob_reporting_summarized_db_url = "jdbc:oracle:thin:@CF_RDS_URL:1521/${oracle_sid}"
 
     $db_driver_class_name = 'oracle.jdbc.OracleDriver'
     $db_validation_query = 'SELECT 1 FROM DUAL'
@@ -145,6 +156,9 @@ class ob_common::params {
     $am_config_db_user_name = 'CF_DB_USERNAME'
     $iam_config_db_user_name = 'CF_DB_USERNAME'
     $ob_db_user_name = 'CF_DB_USERNAME'
+    $geo_location_db_user_name = 'CF_DB_USERNAME'
+    $ob_reporting_db_user_name = 'CF_DB_USERNAME'
+    $ob_reporting_summarized_db_user_name = 'CF_DB_USERNAME'
 
     $wso2_reg_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_govdb;SendStringParametersAsUnicode=false'
     $wso2_um_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_userdb;SendStringParametersAsUnicode=false'
@@ -153,6 +167,9 @@ class ob_common::params {
     $wso2_iam_config_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_iskm_configdb;SendStringParametersAsUnicode=false'
     $wso2_am_stat_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_apimgt_statsdb;SendStringParametersAsUnicode=false'
     $wso2_ob_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_openbankingdb;SendStringParametersAsUnicode=false'
+    $wso2_geo_location_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_geolocationdb;SendStringParametersAsUnicode=false'
+    $wso2_ob_reporting_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_ob_reporting_statsdb;SendStringParametersAsUnicode=false'
+    $wso2_ob_reporting_summarized_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=openbank_ob_reporting_summarizeddb;SendStringParametersAsUnicode=false'
 
     $db_driver_class_name = 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
     $db_connector = 'mssql-jdbc-7.0.0.jre8.jar'
@@ -202,5 +219,23 @@ class ob_common::params {
   $db_open_banking_store_password           = $db_password
   $db_open_banking_store_validation_query   = $db_validation_query
   $db_open_banking_store_driver             = $db_driver_class_name
-}
 
+  # worker/deployment.yaml and dashboard/deployment.yaml params for databases
+  $db_geo_location_url                     = $wso2_geo_location_db_url
+  $db_geo_location_username                = $geo_location_db_user_name
+  $db_geo_location_password                = $db_password
+  $db_geo_location_validation_query        = $db_validation_query
+  $db_geo_location_driver                  = $db_driver_class_name
+
+  $db_ob_reporting_url                     = $wso2_ob_reporting_db_url
+  $db_ob_reporting_username                = $ob_reporting_db_user_name
+  $db_ob_reporting_password                = $db_password
+  $db_ob_reporting_validation_query        = $db_validation_query
+  $db_ob_reporting_driver                  = $db_driver_class_name
+
+  $db_ob_reporting_summarized_url                 = $wso2_ob_reporting_summarized_db_url
+  $db_ob_reporting_summarized_username            = $ob_reporting_summarized_db_user_name
+  $db_ob_reporting_summarized_password            = $db_password
+  $db_ob_reporting_summarized_validation_query    = $db_validation_query
+  $db_ob_reporting_summarized_driver              = $db_driver_class_name
+}

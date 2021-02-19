@@ -302,6 +302,10 @@ permissions=["/permission/admin"]
 [authentication.adaptive.event_publisher]
 url = "http://localhost:8006/"
 
+[[oauth.oidc.custom_request_object_builder]]
+type = "request_uri_param_value_builder"
+class = "com.wso2.finance.open.banking.identity.extensions.builders.RequestUriRequestObjectBuilder"
+
 #================configs related to identity-event.properties=============
 
 [[event_handler]]
@@ -317,7 +321,7 @@ config.password = "<%= @db_open_banking_store_password %>"
 config.driver = "<%= @db_open_banking_store_driver %>"
 
 [open_banking_database.config.pool_options]
-maxActive = "150"
+maxActive = "300"
 maxWait = "60000"
 minIdle ="5"
 testOnBorrow = true
