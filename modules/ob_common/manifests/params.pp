@@ -36,8 +36,8 @@ class ob_common::params {
     $jdk_file_name = "jdk-8u192-ea-bin-b02-linux-x64-19_jul_2018.tar.gz"
     $jdk_name = "jdk1.8.0_192"
   } elsif $jdk_version == 'ADOPT_OPEN_JDK11' {
-    $jdk_type = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz"
-    $jdk_path = "jdk-11.0.5+10"
+    $jdk_file_name = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.5_10.tar.gz"
+    $jdk_name = "jdk-11.0.5+10"
   }
 
   $java_home    = "${java_dir}/${jdk_name}"
