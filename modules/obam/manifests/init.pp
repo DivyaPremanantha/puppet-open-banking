@@ -18,12 +18,12 @@ class obam inherits obam::params{
 
   include ob_common
 
-  # Copy relevant deployment.toml to installed directory according to the spec
+  # Copy deployment.toml to installed directory
   file { "${carbon_home}/${toml_file_path}/${toml_file_name}":
     ensure  => file,
     mode    => '0644',
-    content => template("${module_name}/carbon-home/${toml_file_path}/${spec}/${toml_file_name}.erb"),
-    notify  => Service["${wso2_service_name}"],
+    content => template("${module_name}/carbon-home/${toml_file_path}/${toml_file_name}.erb"),
+    #notify  => Service["${wso2_service_name}"],
     require => Class["ob_common"]
   }
 
@@ -33,21 +33,7 @@ class obam inherits obam::params{
       ensure  => file,
       mode    => '0644',
       content => template("${module_name}/carbon-home/${template}.erb"),
-      notify  => Service["${wso2_service_name}"],
-      require => Class["ob_common"]
-    }
-  }
-
-  #Adding the AU common auth script
-  if $spec == 'AU' {
-    file { "${carbon_home}/${au_common_auth_script_file}":
-      ensure => present,
-      owner => $user,
-      recurse => remote,
-      group => $user_group,
-      mode => '0755',
-      source => "puppet:///modules/${module_name}/${au_common_auth_script_file}",
-      notify  => Service["${wso2_service_name}"],
+      #notify  => Service["${wso2_service_name}"],
       require => Class["ob_common"]
     }
   }
@@ -61,7 +47,7 @@ class obam inherits obam::params{
       group => $user_group,
       mode => '0755',
       source => "puppet:///modules/${module_name}/${file}",
-      notify  => Service["${wso2_service_name}"],
+      #notify  => Service["${wso2_service_name}"],
       require => Class["ob_common"]
     }
   }
@@ -72,19 +58,19 @@ class obam inherits obam::params{
       ensure => absent,
       owner => $user,
       group => $user_group,
-      notify  => Service["${wso2_service_name}"],
+      #notify  => Service["${wso2_service_name}"],
       require => Class["ob_common"]
     }
   }
 
-  # Copy wso2server.sh to installed directory
+  # Copy api-manager.sh to installed directory
   file { "${carbon_home}/${start_script_template}":
     ensure  => file,
     owner   => $user,                                      
     group   => $user_group,
     mode    => '0754',
     content => template("${module_name}/carbon-home/${start_script_template}.erb"),
-    notify  => Service["${wso2_service_name}"],        
+    #notify  => Service["${wso2_service_name}"],
     require => Class["ob_common"]
   }
 }

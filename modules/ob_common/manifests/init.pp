@@ -15,8 +15,8 @@
 #----------------------------------------------------------------------------
 
 class ob_common inherits ob_common::params {
-
-  include '::ob_common::service'
+  #obam, obiam services are triggered from the cloudformation script.
+  #include '::ob_common::service'
 
   # Install system packages
   package { $packages:
@@ -87,6 +87,16 @@ class ob_common inherits ob_common::params {
     require => File["${product_dir}", "${pack_dir}"],
   }
 
+  # Copy accelerator binary to distribution path
+  file { "wso2-accelerator-binary":
+    path    => "${pack_dir}/${accelerator_binary}",
+    owner   => $user,
+    group   => $user_group,
+    mode    => '0644',
+    source  => "puppet:///modules/installers/${accelerator_binary}",
+    require => File["${product_dir}", "${pack_dir}"],
+  }
+
   # Stop the existing setup
   exec { "stop-server":
     command   => "systemctl stop ${wso2_service_name}",
@@ -106,12 +116,29 @@ class ob_common inherits ob_common::params {
   }
 
   # Unzip the binary and create setup
-  exec { "unzip-update":
+  exec { "unzip-update-base-pack":
     command => "unzip -o ${product_binary} -d ${product_dir}",
     path    => "/usr/bin/",
     user    => $user,
     group   => $user_group,                         
     cwd     => "${pack_dir}",
+  }
+
+  # Unzip the accelerator and create setup
+  exec { "unzip-update-accelerator":
+    command => "unzip -o ${accelerator_binary} -d ${product_dir}/${pack}",
+    path    => "/usr/bin/",
+    user    => $user,
+    group   => $user_group,
+    cwd     => "${pack_dir}",
+  }
+
+  # Merge accelerator with base packs
+  exec { "merge-accelerator":
+    command => "${product_dir}/${pack}/${accelerator_pack}/bin/merge.sh",
+    user    => $user,
+    group   => $user_group,
+    cwd     => "${product_dir}/${pack}/${accelerator_pack}/bin",
   }
 
   # Copy the unit file required to deploy the server as a service

@@ -14,7 +14,7 @@
 #  limitations under the License.
 #----------------------------------------------------------------------------
 
-class obiam inherits obiam::params {
+class obbi inherits obbi::params{
 
   include ob_common
 
@@ -23,25 +23,8 @@ class obiam inherits obiam::params {
     ensure  => file,
     mode    => '0644',
     content => template("${module_name}/carbon-home/${toml_file_path}/${toml_file_name}.erb"),
-    #notify  => Service["${wso2_service_name}"],
+    # notify  => Service["${wso2_service_name}"],
     require => Class["ob_common"]
-  }
-
-  # Copy iskm connector script to installed directory
-  file { "${carbon_home}/${accelerator_pack}/bin/merge-connector.sh":
-    ensure  => file,
-    mode    => '0755',
-    source => "puppet:///modules/${module_name}/merge-connector.sh",
-    #notify  => Service["${wso2_service_name}"],
-    require => Class["ob_common"]
-  }
-
-  # Merge iskm connector
-  exec { "merge-iskm-connector":
-    command => "${product_dir}/${pack}/${accelerator_pack}/bin/merge-connector.sh",
-    user    => $user,
-    group   => $user_group,
-    cwd     => "${product_dir}/${pack}/${accelerator_pack}/bin",
   }
 
   # Copy configuration changes to the installed directory
@@ -50,7 +33,7 @@ class obiam inherits obiam::params {
       ensure  => file,
       mode    => '0644',
       content => template("${module_name}/carbon-home/${template}.erb"),
-      #notify  => Service["${wso2_service_name}"],
+      # notify  => Service["${wso2_service_name}"],
       require => Class["ob_common"]
     }
   }
@@ -64,7 +47,7 @@ class obiam inherits obiam::params {
       group   => $user_group,
       mode    => '0755',
       source  => "puppet:///modules/${module_name}/${file}",
-      #notify  => Service["${wso2_service_name}"],
+      # notify  => Service["${wso2_service_name}"],
       require => Class["ob_common"]
     }
   }
@@ -72,22 +55,22 @@ class obiam inherits obiam::params {
   # Delete files to carbon home directory
   $file_removelist.each | String $removefile | {
     file { "${carbon_home}/${removefile}":
-      ensure => absent,
-      owner => $user,
-      group => $user_group,
-      #notify  => Service["${wso2_service_name}"],
+      ensure  => absent,
+      owner   => $user,
+      group   => $user_group,
+      # notify  => Service["${wso2_service_name}"],
       require => Class["ob_common"]
     }
   }
 
-  # Copy wso2server.sh to installed directory
+  # Copy server.sh to installed directory
   file { "${carbon_home}/${start_script_template}":
     ensure  => file,
     owner   => $user,
     group   => $user_group,
     mode    => '0754',
     content => template("${module_name}/carbon-home/${start_script_template}.erb"),
-    #notify  => Service["${wso2_service_name}"],
+    # notify  => Service["${wso2_service_name}"],
     require => Class["ob_common"]
   }
 }
